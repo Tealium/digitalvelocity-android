@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:height="32dp"
+                android:width="32dp" />
+            <solid android:color="#040404" />
+        </shape>
+    </item>
+    <item
+        android:top="6dp"
+        android:left="4dp"
+        android:right="4dp"
+        android:bottom="22dp"
+        android:drawable="@drawable/hamburger_line"/>
+    <item
+        android:top="14dp"
+        android:left="4dp"
+        android:right="4dp"
+        android:bottom="14dp"
+        android:drawable="@drawable/hamburger_line"/>
+    <item
+        android:top="22dp"
+        android:left="4dp"
+        android:right="4dp"
+        android:bottom="6dp"
+        android:drawable="@drawable/hamburger_line"/>
+</layer-list>

@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/centered_view_margin"
+    android:paddingRight="@dimen/centered_view_margin"
+    android:paddingTop="@dimen/centered_view_margin"
+    android:paddingBottom="@dimen/centered_view_margin"
+    android:background="#000"
+    tools:context="com.tealium.digitalvelocity.ContactActivity">
+
+    <View
+        android:id="@+id/contact_centerpoint"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:visibility="invisible" />
+
+    <com.tealium.digitalvelocity.view.FontAwesomeView
+        android:id="@+id/contact_twitter"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        style="@style/contact"
+        android:layout_toLeftOf="@id/contact_centerpoint"
+        android:layout_toStartOf="@id/contact_centerpoint"
+        android:layout_above="@id/contact_centerpoint"
+        android:text="@string/contact_twitter_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.tealium.digitalvelocity.view.FontAwesomeView
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/contact_facebook"
+        style="@style/contact"
+        android:layout_toRightOf="@id/contact_centerpoint"
+        android:layout_toEndOf="@id/contact_centerpoint"
+        android:layout_above="@id/contact_centerpoint"
+        android:text="@string/contact_facebook_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.tealium.digitalvelocity.view.FontAwesomeView
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/contact_mail"
+        style="@style/contact"
+        android:layout_toLeftOf="@id/contact_centerpoint"
+        android:layout_toStartOf="@id/contact_centerpoint"
+        android:layout_below="@id/contact_centerpoint"
+        android:text="@string/contact_envelope_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.tealium.digitalvelocity.view.FontAwesomeView
+        android:id="@+id/contact_phone"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        style="@style/contact"
+        android:layout_toRightOf="@id/contact_centerpoint"
+        android:layout_toEndOf="@id/contact_centerpoint"
+        android:layout_below="@id/contact_centerpoint"
+        android:text="@string/contact_phone_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
