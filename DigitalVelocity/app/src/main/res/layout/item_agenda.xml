@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:padding="@dimen/item_padding">
+
+    <ImageView
+        android:id="@+id/item_agenda_image"
+        android:layout_width="@dimen/item_image_size"
+        android:layout_height="@dimen/item_image_size"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:contentDescription="@string/item_agenda_image_content_description" />
+
+    <ImageView
+        android:id="@+id/item_agenda_image_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/item_agenda_image"
+        android:layout_alignEnd="@id/item_agenda_image"
+        android:layout_alignLeft="@id/item_agenda_image"
+        android:layout_alignRight="@id/item_agenda_image"
+        android:layout_alignStart="@id/item_agenda_image"
+        android:layout_alignTop="@id/item_agenda_image"
+        android:background="#fff"
+        android:contentDescription="@string/item_agenda_image_content_description"
+        android:src="@mipmap/dv_logo_white" />
+
+    <com.tealium.digitalvelocity.view.FontAwesomeView
+        android:id="@+id/item_agenda_label_fa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/item_agenda_image"
+        android:layout_alignEnd="@id/item_agenda_image"
+        android:layout_alignLeft="@id/item_agenda_image"
+        android:layout_alignRight="@id/item_agenda_image"
+        android:layout_alignStart="@id/item_agenda_image"
+        android:layout_alignTop="@id/item_agenda_image"
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:text="X"
+        android:textColor="#777"
+        android:textSize="@dimen/item_fa_size" />
+
+    <com.tealium.digitalvelocity.view.FontAwesomeView
+        android:id="@+id/item_agenda_button_location"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/circle"
+        android:gravity="center"
+        android:text="@string/item_agenda_button_location_title"
+        android:textColor="@color/button_location_text"
+        android:textSize="30dp" />
+
+    <com.tealium.digitalvelocity.view.DVTextView
+        android:id="@+id/item_agenda_label_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_toEndOf="@id/item_agenda_image"
+        android:layout_toLeftOf="@id/item_agenda_button_location"
+        android:layout_toRightOf="@id/item_agenda_image"
+        android:layout_toStartOf="@id/item_agenda_button_location"
+        android:text="Agenda Text"
+        android:textColor="#000"
+        android:textSize="@dimen/item_title_textsize"
+        tools:ignore="HardcodedText" />
+
+    <com.tealium.digitalvelocity.view.DVTextView
+        android:id="@+id/item_agenda_label_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/item_agenda_label_title"
+        android:layout_alignLeft="@id/item_agenda_label_title"
+        android:layout_alignRight="@id/item_agenda_label_title"
+        android:layout_alignStart="@id/item_agenda_label_title"
+        android:layout_below="@id/item_agenda_label_title"
+        android:text="Wednesday 14:19"
+        android:textColor="#868a89"
+        android:textSize="@dimen/item_subtitle_textsize"
+        tools:ignore="HardcodedText" />
+
+    <ImageView
+        android:id="@+id/item_agenda_label_favorite"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@android:drawable/star_big_on"
+        android:contentDescription="@string/item_agenda_label_favorite_contentDescription"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+</RelativeLayout>

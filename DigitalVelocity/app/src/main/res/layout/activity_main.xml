@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000">
+
+    <com.tealium.digitalvelocity.view.DVBackgroundView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        custom:src="@mipmap/hardrockexterior1" />
+
+    <com.tealium.digitalvelocity.view.DVTextViewLight
+        android:id="@+id/main_label_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:background="#000"
+        android:gravity="center"
+        android:paddingBottom="20dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="20dp"
+        android:text="@string/main_label_slogan_text"
+        android:textColor="#fff"
+        android:textSize="20sp" />
+
+    <!-- above -->
+
+    <com.tealium.digitalvelocity.view.DVTextView
+        android:id="@+id/main_label_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/main_label_description"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="5dp"
+        android:text="@string/main_label_year_text"
+        android:textColor="#fff"
+        android:textSize="36sp"
+        android:textStyle="bold" />
+
+    <com.tealium.digitalvelocity.view.DVTextViewLight
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/main_label_year"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="25dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginStart="30dp"
+        android:gravity="center"
+        android:text="@string/main_label_dv_text"
+        android:textColor="#fff"
+        android:textSize="36sp" />
+
+
+    <!-- below -->
+
+    <com.tealium.digitalvelocity.view.DVTextViewLight
+        android:id="@+id/main_label_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/main_label_description"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:background="#7000"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/main_label_date_location_text"
+        android:textColor="#fff"
+        android:textSize="18sp" />
+
+    <ImageButton
+        android:id="@+id/main_button_debug"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@android:drawable/ic_menu_manage"
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
+
+</RelativeLayout>

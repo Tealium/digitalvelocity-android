@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    tools:context="com.tealium.digitalvelocity.EmailActivity">
+
+    <com.tealium.digitalvelocity.view.DVBackgroundView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        custom:src="@mipmap/hardrockexterior1" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/email_image_logo_content_description"
+        android:src="@mipmap/dv_logo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="30dp"
+        android:orientation="vertical">
+
+        <com.tealium.digitalvelocity.view.DVTextView
+            style="@style/label"
+            android:layout_marginBottom="10dp"
+            android:text="@string/email_label_text" />
+
+        <EditText
+            android:id="@+id/email_input"
+            style="@style/input"
+            android:layout_marginBottom="10dp"
+            android:hint="@string/email_input_hint"
+            android:imeOptions="actionDone"
+            android:inputType="textEmailAddress" />
+
+        <com.tealium.digitalvelocity.view.DVTextView
+            android:id="@+id/email_button_enter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="#00a8b5"
+            android:paddingBottom="8dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="8dp"
+            android:text="@string/email_button_enter_title"
+            android:textColor="#fff"
+            android:textSize="@dimen/input_text_size" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

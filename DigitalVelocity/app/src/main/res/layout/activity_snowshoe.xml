@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/snowshoe_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.tealium.digitalvelocity.SnowshoeActivity">
+
+    <ProgressBar
+        android:id="@+id/snowshoe_progressbar"
+        style="@android:style/Widget.Holo.Light.ProgressBar.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <com.tealium.digitalvelocity.view.DVTextViewLight
+        android:id="@+id/snowshoe_label_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/snowshoe_progressbar"
+        android:layout_centerHorizontal="true"
+        android:padding="3dp"
+        android:text="@string/snowshoe_label_loading_text"
+        android:textColor="#555"
+        android:textSize="18sp" />
+
+    <com.tealium.digitalvelocity.view.DVTextViewSemiBold
+        android:id="@+id/snowshoe_label_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="3dp"
+        android:text="@string/snowshoe_label_error_text"
+        android:textColor="#900"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <WebView
+        android:id="@+id/snowshoe_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#0000"
+        android:visibility="gone" />
+
+</RelativeLayout>

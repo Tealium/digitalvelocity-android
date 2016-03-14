@@ -1,0 +1,1 @@
+include ':app', ':beacon', ':debug', ':push', ':keymanager'

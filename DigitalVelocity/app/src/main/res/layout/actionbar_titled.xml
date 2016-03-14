@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.tealium.digitalvelocity.view.DVTextViewLight
+        android:id="@+id/actionbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textSize="24sp"
+        android:textColor="#fff"
+        android:paddingLeft="@dimen/action_bar_title_padding_left"
+        android:layout_centerInParent="true"
+        tools:ignore="HardcodedText" />
+    
+    <ProgressBar
+        android:id="@+id/actionbar_activityindicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        style="@android:style/Widget.ProgressBar.Small"/>
+
+</RelativeLayout>

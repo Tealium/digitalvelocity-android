@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tealium.digitalvelocity">
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:name=".DigitalVelocityApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".SnowshoeActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="com.tealium.digitalvelocity.activity.show_logo"
+                android:value="true" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".WelcomeActivity"
+            android:configChanges="orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="com.tealium.digitalvelocity.activity.show_logo"
+                android:value="true" />
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity
+            android:name=".AgendaActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_agenda"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="com.tealium.digitalvelocity.activity.show_filter"
+                android:value="true" />
+        </activity>
+        <activity
+            android:name=".NotificationsActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_notifications"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SponsorsActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_sponsors"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ContactActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_contact"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".LocationActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_event_location"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EmailActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_email"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".WebViewActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_sponsor_detail"
+            android:parentActivityName=".SponsorsActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SponsorsActivity" />
+        </activity>
+        <activity
+            android:name=".AgendaDetailActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DebugActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_debug"
+            android:screenOrientation="portrait" />
+
+        <service android:name=".BeaconService" />
+
+        <receiver android:name=".BootBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".AlarmReceiver" />
+        <receiver android:name=".ClockChangeReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.TIME_SET" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".DemoActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_demo"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

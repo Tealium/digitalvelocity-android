@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/item_padding"
+    android:background="#fff">
+
+    <ImageView
+        android:id="@+id/item_sponsor_image_logo"
+        android:layout_width="@dimen/item_image_size"
+        android:layout_height="@dimen/item_image_size"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:contentDescription="@string/item_sponsor_image_logo_content_description" />
+
+    <ImageView
+        android:id="@+id/item_sponsor_image_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_sponsor_image_logo"
+        android:layout_alignLeft="@id/item_sponsor_image_logo"
+        android:layout_alignStart="@id/item_sponsor_image_logo"
+        android:layout_alignEnd="@id/item_sponsor_image_logo"
+        android:layout_alignRight="@id/item_sponsor_image_logo"
+        android:layout_alignBottom="@id/item_sponsor_image_logo"
+        android:src="@mipmap/dv_logo_white"
+        android:contentDescription="@string/item_agenda_image_content_description" />
+
+    <com.tealium.digitalvelocity.view.FontAwesomeView
+        android:id="@+id/item_sponsor_button_location"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:textSize="30dp"
+        android:textColor="@color/button_location_text"
+        android:background="@drawable/circle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="@string/item_agenda_button_location_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_toRightOf="@id/item_sponsor_image_logo"
+        android:layout_toEndOf="@id/item_sponsor_image_logo"
+        android:layout_toLeftOf="@id/item_sponsor_button_location"
+        android:layout_toStartOf="@id/item_sponsor_button_location"
+        android:layout_centerInParent="true">
+
+        <com.tealium.digitalvelocity.view.DVTextView
+            android:id="@+id/item_sponsor_label_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:textSize="@dimen/item_title_textsize"
+            android:text="Company Name"
+            android:layout_marginBottom="5dp"
+            android:gravity="bottom|start"
+            tools:ignore="HardcodedText" />
+
+        <com.tealium.digitalvelocity.view.DVTextViewLight
+            android:id="@+id/item_sponsor_label_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#a6aaa9"
+            android:textSize="@dimen/item_subtitle_textsize"
+            android:gravity="top|start"
+            android:text="Company Description"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.tealium.digitalvelocity.LocationActivity">
+    <item
+        android:id="@+id/menu_modal_close"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="@string/menu_modal_close_title"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+</menu>
