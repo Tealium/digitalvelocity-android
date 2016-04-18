@@ -31,6 +31,22 @@ public final class ParseHelper {
     public static final MediaType MEDIA_TYPE_JSON;
     private static final SimpleDateFormat FORMAT;
 
+    public static final class Column {
+        private Column() {
+        }
+
+        public static final String COLOR_BRIGHTNESS = "vip_color_brightness";
+        public static final String COLOR_HUE = "vip_color_hue";
+        public static final String COLOR_SATURATION = "vip_color_saturation";
+        public static final String ID = "objectId";
+        public static final String IMAGE = "vip_image";
+        public static final String MUSIC = "vip_music";
+        public static final String NAME = "vip_name";
+        public static final String VIDEO = "vip_video";
+        public static final String VISIBLE = "visible";
+
+    }
+
     static {
         MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -57,6 +73,19 @@ public final class ParseHelper {
                 createWhereStatement(Table.Config));
     }
 
+    static Request createAttendeeRequest(String email) throws JSONException {
+        return createClassRequest("Attendee", null,
+                new JSONObject().put("email", email).toString());
+    }
+
+    static Request createSurveyRequest() {
+        return createClassRequest("Survey", "title,questionIds", createWhereStatement(Table.Survey));
+    }
+
+    static Request createQuestionRequest() {
+        return createClassRequest("Question", "title,answers", createWhereStatement(Table.Question));
+    }
+
     static Request createEventRequest() {
         return createClassRequest("Event",
                 "objectId," +
@@ -77,7 +106,7 @@ public final class ParseHelper {
 
     static Request createCompanyRequest() {
         return createClassRequest("Company",
-                "objectId,title,subTitle,categoryId,url,imageData,visible",
+                "objectId,title,subTitle,categoryId,url,imageData,visible,email,emailMessage",
                 createWhereStatement(Table.Company));
     }
 
@@ -98,8 +127,12 @@ public final class ParseHelper {
                 .authority("api.parse.com")
                 .appendPath("1")
                 .appendPath("classes")
-                .appendPath(className)
-                .appendQueryParameter("keys", keys);
+                .appendPath(className);
+
+
+        if (keys != null) {
+            builder.appendQueryParameter("keys", keys);
+        }
 
         if (where != null) {
             builder.appendQueryParameter("where", where);
@@ -122,6 +155,7 @@ public final class ParseHelper {
                     .put("channels", new JSONArray()
                             .put("vid-" + model.getVisitorId())
                             .put("everyone"))
+                    .put("email", model.getUserEmail())
                     .put("timeZone", TimeZone.getDefault().getID())
                     .put("deviceType", "android")
                     .put("pushType", "gcm")

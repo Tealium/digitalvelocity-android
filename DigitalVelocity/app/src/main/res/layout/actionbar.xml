@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="54dp"
+    android:background="@color/actionbar_black">
+
+    <ImageView
+        android:id="@+id/actionbar_image_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/actionbar_logo_contentdescription"
+        android:src="@mipmap/ic_launcher" />
+
+    <com.tealium.digitalvelocity.view.DVTextViewLight
+        android:id="@+id/actionbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="Title"
+        android:textColor="#fff"
+        android:textSize="24sp"
+        android:visibility="gone"
+        tools:ignore="HardcodedText" />
+
+    <ProgressBar
+        android:id="@+id/actionbar_activityindicator"
+        style="@android:style/Widget.ProgressBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/actionbar_imageview_hamburger"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/actionbar_hamburger_contentDescription"
+        android:src="@drawable/hamburger" />
+
+    <ImageView
+        android:id="@+id/actionbar_imageview_favorites"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/actionbar_imageview_hamburger"
+        android:layout_toStartOf="@id/actionbar_imageview_hamburger"
+        android:contentDescription="@string/actionbar_imageview_favorites_contentDescription"
+        android:src="@android:drawable/star_big_off" />
+
+</RelativeLayout>

@@ -20,7 +20,6 @@
         <RadioButton
             android:id="@+id/location_radio_category_map"
             style="@style/location_radio"
-            android:checked="true"
             android:text="@string/location_radio_map_text" />
 
         <RadioButton
@@ -46,14 +45,14 @@
         android:layout_below="@id/location_radiogroup_categories">
 
         <FrameLayout
-            android:id="@+id/location_content_map_container"
-            android:visibility="gone"
+            android:id="@+id/location_content_map_holder"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <fragment
                 android:id="@+id/location_content_map"
-                class="com.google.android.gms.maps.SupportMapFragment"
+                class="com.google.android.gms.maps.MapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

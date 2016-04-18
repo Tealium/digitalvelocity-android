@@ -1,13 +1,13 @@
 package com.tealium.digitalvelocity.location;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.view.View;
 import android.widget.RadioButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.tealium.digitalvelocity.R;
@@ -20,19 +20,18 @@ import java.util.List;
 
 public class MapController extends BaseController implements View.OnClickListener {
 
-    private final SupportMapFragment mMapFragment;
+    private final MapFragment mMapFragment;
     private final List<Coordinates> mCoordinates = new ArrayList<>(2);
     private final View mMapFragmentContainer;
     private GoogleMap mMap;
     private Coordinates mSelectedCoords;
 
-    public MapController(AppCompatActivity activity) {
+    public MapController(Activity activity) {
         super(activity);
 
-        mMapFragmentContainer = activity.findViewById(R.id.location_content_map_container);
+        mMapFragmentContainer = activity.findViewById(R.id.location_content_map_holder);
 
-        mMapFragment =
-                (SupportMapFragment) activity.getSupportFragmentManager()
+        mMapFragment = (MapFragment) activity.getFragmentManager()
                         .findFragmentById(R.id.location_content_map);
         mMapFragment.getMapAsync(createMapReadyCallback());
     }

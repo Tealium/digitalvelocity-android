@@ -15,6 +15,7 @@ import com.tealium.digitalvelocity.AlarmReceiver;
 import com.tealium.digitalvelocity.BuildConfig;
 import com.tealium.digitalvelocity.R;
 import com.tealium.digitalvelocity.data.gson.AgendaItem;
+import com.tealium.digitalvelocity.data.gson.Question;
 import com.tealium.digitalvelocity.event.Purge;
 import com.tealium.digitalvelocity.event.SyncCompleteEvent;
 import com.tealium.digitalvelocity.keymanager.KeyManager;
@@ -24,6 +25,8 @@ import com.tealium.digitalvelocity.push.PushManager;
 import com.tealium.digitalvelocity.util.Constant;
 import com.tealium.digitalvelocity.util.Util;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -32,7 +35,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import de.greenrobot.event.EventBus;
@@ -46,6 +52,7 @@ public final class Model {
     private final SharedPreferences mSharedPreferences;
     private final SharedPreferences mImgQueue;
     private final SharedPreferences mAgendaFavorites;
+    private final SharedPreferences mVipPreferences;
     private final KeyManager mKeyManager;
     private final Context mContext;
     private final Typeface mDefaultTypeface;
@@ -53,7 +60,6 @@ public final class Model {
     private final Typeface mLightTypeface;
     private final Typeface mFontAwesome;
     private final String mVisitorId;
-
 
     private Model(Context context) {
         if (context == null) {
@@ -63,6 +69,7 @@ public final class Model {
         mSharedPreferences = context.getSharedPreferences(Constant.SP.NAME, 0);
         mImgQueue = context.getSharedPreferences(Constant.IMG_QUEUE.NAME, 0);
         mAgendaFavorites = context.getSharedPreferences(Constant.AGENDA_FAVORITES, 0);
+        mVipPreferences = context.getSharedPreferences(Constant.VIP_PREFERENCES, 0);
 
         String uuid = mSharedPreferences.getString(Constant.SP.KEY_UUID, null);
 
@@ -104,6 +111,26 @@ public final class Model {
         }
 
         updateEstimoteManager();
+    }
+
+    public boolean isSurveyComplete(String surveyID) {
+        return mSharedPreferences.contains(Constant.SP.KEY_SURVEY_PREFIX + surveyID);
+    }
+
+    public void setSurveyComplete(String surveyID, Map<Question, String> answers) {
+
+        final String key = Constant.SP.KEY_SURVEY_PREFIX + surveyID;
+
+        final SharedPreferences.Editor editor = mSharedPreferences.edit()
+                .putBoolean(key, true);
+
+        for (Map.Entry<Question, String> entry : answers.entrySet()) {
+            editor.putString(
+                    Constant.SP.KEY_SURVEY_QUESTION_PREFIX + entry.getKey().getId(),
+                    entry.getValue());
+        }
+
+        editor.apply();
     }
 
     public static synchronized Model setup(Context context) {
@@ -187,6 +214,33 @@ public final class Model {
         return mSharedPreferences.getString(Constant.SP.KEY_DEMO_ENVIRONMENT, null);
     }
 
+    public Map<String, ?> getVipData() {
+        return mVipPreferences.getAll();
+    }
+
+    public String getSurveyAnswer(Question question) {
+        return mSharedPreferences.getString(Constant.SP.KEY_SURVEY_QUESTION_PREFIX + question.getId(), null);
+    }
+
+    public void updateVipInfo(JSONObject o) throws JSONException {
+        final SharedPreferences.Editor editor = mVipPreferences.edit();
+        for (Iterator<String> i = o.keys(); i.hasNext(); ) {
+            final String key = i.next();
+            Object value = o.get(key);
+            if (value instanceof JSONArray) {
+                final JSONArray valueJsonArray = (JSONArray) value;
+                final Set<String> valueAsSet = new HashSet<>(valueJsonArray.length());
+                for (int j = 0; j < valueJsonArray.length(); j++) {
+                    valueAsSet.add(valueJsonArray.getString(j));
+                }
+                editor.putStringSet(key, valueAsSet);
+            } else {
+                editor.putString(key, "" + value);
+            }
+        }
+        editor.commit();
+    }
+
     /**
      * @return instanceId if account/profile/environment are appropriate
      */
@@ -263,7 +317,7 @@ public final class Model {
                 .putInt(Constant.SP.KEY_MONITORING_STOP_HOUR, o.optInt("stopMonitoring", 23))
                 .putLong(Constant.SP.KEY_MONITORING_STOP_DATE,
                         ParseHelper.parseDate(o.optJSONObject("stopMonitoringDate"), Long.MAX_VALUE))
-                        // Estimote Manager
+                // Estimote Manager
                 .putInt(Constant.SP.KEY_RSSI_THRESHOLD, o.optInt("rssiThreshold", Defaults.RSSI_THRESHOLD))
                 .putLong(Constant.SP.KEY_POI_IN_PERIOD,
                         o.optLong("poiRefreshCycle",

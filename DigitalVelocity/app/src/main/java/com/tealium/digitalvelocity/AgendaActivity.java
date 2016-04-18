@@ -38,6 +38,11 @@ public final class AgendaActivity extends DrawerLayoutActivity {
     }
 
     @Override
+    protected boolean isFilteringFavorites() {
+        return true;
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
 
@@ -99,17 +104,6 @@ public final class AgendaActivity extends DrawerLayoutActivity {
             this.shouldScroll = true;
             //return;
         }
-
-        /* TODO: fix new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                final int position = adapter.getPositionForTime(
-                        System.currentTimeMillis() + TimeZone.getDefault().getRawOffset());
-                if (position != -1) {
-                    listView.smoothScrollToPositionFromTop(position, 100);
-                }
-            }
-        }, 500);*/
     }
 
     @SuppressWarnings("unused")
@@ -121,8 +115,8 @@ public final class AgendaActivity extends DrawerLayoutActivity {
     }
 
     @Override
-    protected void onFilterClick(boolean filterFavorites) {
-        this.adapter.setFilteringFavorites(filterFavorites);
+    protected void onFilterClick(boolean shouldFilterFavorites) {
+        this.adapter.setFilteringFavorites(shouldFilterFavorites);
     }
 
     private AdapterView.OnItemClickListener createItemClickListener() {

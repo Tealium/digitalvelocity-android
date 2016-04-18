@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.tealium.digitalvelocity.view.DVTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/label_button"
+    android:text="@string/item_surveydetail_submit_text"
+    android:textSize="@dimen/item_title_textsize" />
+
+
+
+

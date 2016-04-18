@@ -1,49 +1,58 @@
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawerlayout_root"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/actionbar_black"
+    android:orientation="vertical">
 
-    <!-- The main content view -->
-    <FrameLayout
-        android:id="@+id/drawerlayout_content"
+    <include layout="@layout/actionbar" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerlayout_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <!-- The navigation drawer -->
-    <RelativeLayout
-        android:id="@+id/drawerlayout_drawer_right"
-        android:layout_width="210dp"
-        android:layout_height="match_parent"
-        android:background="#111"
-        android:paddingLeft="0dp"
-        android:paddingStart="0dp"
-        android:paddingRight="16dp"
-        android:paddingEnd="16dp"
-        android:layout_gravity="end">
-
-        <com.tealium.digitalvelocity.view.FontAwesomeView
-            android:id="@+id/drawerlayout_drawer_button_settings"
-            android:textColor="@color/button_settings"
-            android:textSize="30dp"
-            android:text="@string/drawerlayout_layout_button_settings_text"
-            android:gravity="center"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:contentDescription="@string/drawerlayout_layout_button_settings_text" />
-
-        <ListView
-            android:id="@+id/drawerlayout_drawer_menu"
+        <!-- The main content view -->
+        <FrameLayout
+            android:id="@+id/drawerlayout_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/drawerlayout_drawer_button_settings"
-            android:layout_alignParentTop="true"
-            android:choiceMode="singleChoice"
-            android:divider="#53585e"
-            android:dividerHeight="1dp" />
+            android:layout_height="match_parent" />
 
-    </RelativeLayout>
+        <!-- The navigation drawer -->
+        <RelativeLayout
+            android:id="@+id/drawerlayout_drawer_right"
+            android:layout_width="210dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="#111"
+            android:paddingEnd="16dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="16dp"
+            android:paddingStart="0dp">
 
-</android.support.v4.widget.DrawerLayout>
+            <com.tealium.digitalvelocity.view.FontAwesomeView
+                android:id="@+id/drawerlayout_drawer_button_settings"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="40dp"
+                android:contentDescription="@string/drawerlayout_layout_button_settings_text"
+                android:gravity="center"
+                android:text="@string/drawerlayout_layout_button_settings_text"
+                android:textColor="@color/button_settings"
+                android:textSize="30dp" />
+
+            <ListView
+                android:id="@+id/drawerlayout_drawer_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/drawerlayout_drawer_button_settings"
+                android:layout_alignParentTop="true"
+                android:choiceMode="singleChoice"
+                android:divider="#53585e"
+                android:dividerHeight="1dp" />
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.DrawerLayout>
+</LinearLayout>

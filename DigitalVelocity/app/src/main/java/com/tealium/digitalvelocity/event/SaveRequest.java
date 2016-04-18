@@ -40,4 +40,16 @@ public class SaveRequest<T> {
             super(item);
         }
     }
+
+    public static final class Survey extends SaveRequest<com.tealium.digitalvelocity.data.gson.Survey> {
+        public Survey(com.tealium.digitalvelocity.data.gson.Survey item) {
+            super(item);
+        }
+    }
+
+    public static final class Question extends SaveRequest<com.tealium.digitalvelocity.data.gson.Question> {
+        public Question(com.tealium.digitalvelocity.data.gson.Question item) {
+            super(item);
+        }
+    }
 }

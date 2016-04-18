@@ -2,4 +2,7 @@
 <resources>
     <color name="favorite_selected">#c8c800</color>
     <color name="favorite_unselected">#777</color>
+    <color name="actionbar_black">#040404</color>
+    <color name="demo_button_color">#5cadb1</color>
+    <color name="tealium_blue">#1297fe</color>
 </resources>

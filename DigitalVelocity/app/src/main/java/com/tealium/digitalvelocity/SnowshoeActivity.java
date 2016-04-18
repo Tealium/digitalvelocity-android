@@ -54,6 +54,11 @@ public final class SnowshoeActivity extends DrawerLayoutActivity {
         }
     }
 
+    @Override
+    protected boolean isShowingLogo() {
+        return true;
+    }
+
     private void loadPage() {
         mViewState.mWebView.loadUrl(new Uri.Builder()
                 .scheme("http")

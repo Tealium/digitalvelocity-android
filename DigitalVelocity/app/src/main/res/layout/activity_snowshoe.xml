@@ -7,7 +7,7 @@
 
     <ProgressBar
         android:id="@+id/snowshoe_progressbar"
-        style="@android:style/Widget.Holo.Light.ProgressBar.Large"
+        style="@android:style/Widget.DeviceDefault.ProgressBar.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
@@ -20,7 +20,7 @@
         android:layout_centerHorizontal="true"
         android:padding="3dp"
         android:text="@string/snowshoe_label_loading_text"
-        android:textColor="#555"
+        android:textColor="#aaa"
         android:textSize="18sp" />
 
     <com.tealium.digitalvelocity.view.DVTextViewSemiBold

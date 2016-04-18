@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.tealium.digitalvelocity.view.FontAwesomeView
+        android:id="@+id/dvradiogroup_item_image"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_weight="0"
+        android:textSize="20dp" />
+
+    <com.tealium.digitalvelocity.view.DVTextView
+        android:id="@+id/dvradiogroup_item_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#000"
+        android:textSize="18sp" />
+
+</LinearLayout>

@@ -9,7 +9,7 @@ public final class TrackEvent {
     public static final String TYPE_EVENT = "link";
 
     private final String mType;
-    private final Map<String, String> mData;
+    private final Map<String, Object> mData;
 
     private TrackEvent(String type) {
         mType = type;
@@ -28,7 +28,7 @@ public final class TrackEvent {
         return mType;
     }
 
-    public Map<String, String> getData() {
+    public Map<String, Object> getData() {
         return mData;
     }
 

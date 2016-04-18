@@ -3,7 +3,6 @@ package com.tealium.digitalvelocity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -12,7 +11,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 
-public final class WebViewActivity extends AppCompatActivity {
+public final class WebViewActivity extends Activity {
 
     public static final String EXTRA_TITLE = "title";
 
@@ -25,7 +24,6 @@ public final class WebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(this.getIntent().getStringExtra(EXTRA_TITLE));
 
         this.activityIndicator = (ProgressBar) this.findViewById(R.id.webview_activityindicator);

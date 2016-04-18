@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical"
+    tools:context="com.tealium.digitalvelocity.SurveyDetailActivity">
+
+    <include layout="@layout/actionbar" />
+
+    <!--<com.tealium.digitalvelocity.view.DVTextView
+        android:id="@+id/survey_detail_label_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />-->
+
+    <ListView
+        android:id="@+id/survey_detail_listview_questions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#fff"
+        android:padding="10dp" />
+
+</LinearLayout>

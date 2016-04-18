@@ -10,15 +10,19 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.tealium.digitalvelocity.BuildConfig;
 import com.tealium.digitalvelocity.data.Model;
+import com.tealium.digitalvelocity.data.TrackingManager;
 import com.tealium.digitalvelocity.data.gson.AgendaItem;
 import com.tealium.digitalvelocity.data.gson.Category;
 import com.tealium.digitalvelocity.data.gson.Coordinates;
 import com.tealium.digitalvelocity.data.gson.Floor;
+import com.tealium.digitalvelocity.data.gson.Question;
 import com.tealium.digitalvelocity.data.gson.Sponsor;
+import com.tealium.digitalvelocity.data.gson.Survey;
 import com.tealium.digitalvelocity.event.Purge;
 import com.tealium.digitalvelocity.event.SaveRequest;
 import com.tealium.digitalvelocity.event.SyncCompleteEvent;
 import com.tealium.digitalvelocity.event.SyncRequest;
+import com.tealium.digitalvelocity.event.TrackUpdateEvent;
 import com.tealium.digitalvelocity.push.PushManager;
 import com.tealium.digitalvelocity.push.event.PushTokenUpdateEvent;
 import com.tealium.digitalvelocity.util.Constant;
@@ -54,8 +58,6 @@ public final class SyncManager {
         final Model model = Model.getInstance();
         final String gcmToken = model.getGcmToken();
         final boolean hasGCMToken = gcmToken != null;
-
-        Log.d(Constant.TAG, "!TOKEN: " + gcmToken);
 
         if (model.isParsePushRegistered() && hasGCMToken) {
             if (BuildConfig.DEBUG) {
@@ -103,8 +105,13 @@ public final class SyncManager {
 
         try {
             switch (parseResponse.getTable()) {
+                case Installation:
+                    if (BuildConfig.DEBUG) {
+                        Log.d(Constant.TAG, parseResponse.getData().toString(4));
+                    }
+                    break;
                 case Config:
-                    this.processConfigData(results);
+                    processConfigData(results);
                     break;
                 case Company:
                     if (results.length() == 0) {
@@ -113,30 +120,36 @@ public final class SyncManager {
                         break;
                     }
 
-                    if (!this.mSyncData.isRequestMade()) {
+                    if (!mSyncData.isRequestMade()) {
                         performRequest(ParseHelper.createCategoryRequest(), Table.Category);
-                        this.mSyncData.setRequestMade(true);
+                        mSyncData.setRequestMade(true);
                     }
 
-                    this.mSyncData.setSponsorData(results);
+                    mSyncData.setSponsorData(results);
 
-                    if (this.mSyncData.isSponsorReady()) {
-                        this.processCompanyData();
+                    if (mSyncData.isSponsorReady()) {
+                        processCompanyData();
                     }
                     break;
                 case Category:
-                    this.mSyncData.loadCategories(results);
+                    mSyncData.loadCategories(results);
 
-                    if (this.mSyncData.isAgendaReady()) {
-                        this.processEventData();
+                    if (mSyncData.isAgendaReady()) {
+                        processEventData();
                     }
 
-                    if (this.mSyncData.isSponsorReady()) {
-                        this.processCompanyData();
+                    if (mSyncData.isSponsorReady()) {
+                        processCompanyData();
                     }
                     break;
                 case Location:
-                    this.processLocationData(results);
+                    processLocationData(results);
+                    break;
+                case Survey:
+                    processParseItemData(Table.Survey, results);
+                    break;
+                case Question:
+                    processParseItemData(Table.Question, results);
                     break;
                 case Event:
                     if (results.length() == 0) {
@@ -145,16 +158,19 @@ public final class SyncManager {
                         break;
                     }
 
-                    if (!this.mSyncData.isRequestMade()) {
+                    if (!mSyncData.isRequestMade()) {
                         performRequest(ParseHelper.createCategoryRequest(), Table.Category);
-                        this.mSyncData.setRequestMade(true);
+                        mSyncData.setRequestMade(true);
                     }
 
-                    this.mSyncData.setAgendaData(results);
+                    mSyncData.setAgendaData(results);
 
-                    if (this.mSyncData.isAgendaReady()) {
-                        this.processEventData();
+                    if (mSyncData.isAgendaReady()) {
+                        processEventData();
                     }
+                    break;
+                case Attendee:
+                    processAttendeeData(results);
                     break;
             }
         } catch (Throwable t) {
@@ -166,6 +182,20 @@ public final class SyncManager {
     @SuppressWarnings("unused")
     public void onEventBackgroundThread(PushTokenUpdateEvent event) {
         registerParseInBackground(event.getGcmToken());
+    }
+
+    @SuppressWarnings("unused")
+    public void onEventBackgroundThread(TrackUpdateEvent event) {
+        // Update if e-mail updated
+        if (!TrackingManager.Key.EMAIL.equals(event.getKey())) {
+            return;
+        }
+
+        try {
+            performRequest(ParseHelper.createAttendeeRequest(event.getValue()), Table.Attendee);
+        } catch (JSONException e) {
+            Log.e(Constant.TAG, e.getMessage(), e);
+        }
     }
 
     private boolean syncConfig() {
@@ -184,8 +214,10 @@ public final class SyncManager {
 
         // Reset for incoming.
         mSyncData.reset();
+
+        final Model model = Model.getInstance();
         final long now = System.currentTimeMillis();
-        final long syncRate = Model.getInstance().getParseSyncRate();
+        final long syncRate = model.getParseSyncRate();
 
         if (readyToSync(now, syncRate, Table.Event)) {
             performRequest(ParseHelper.createEventRequest(), Table.Event);
@@ -198,6 +230,46 @@ public final class SyncManager {
         if (readyToSync(now, syncRate, Table.Company)) {
             performRequest(ParseHelper.createCompanyRequest(), Table.Company);
         }
+
+        if (readyToSync(now, syncRate, Table.Survey)) {
+            performRequest(ParseHelper.createSurveyRequest(), Table.Survey);
+        }
+
+        if (readyToSync(now, syncRate, Table.Question)) {
+            performRequest(ParseHelper.createQuestionRequest(), Table.Question);
+        }
+
+        if (readyToSync(now, syncRate, Table.Attendee) && model.getUserEmail() != null) {
+            try {
+                performRequest(ParseHelper.createAttendeeRequest(model.getUserEmail()), Table.Attendee);
+            } catch (JSONException e) {
+                Log.e(Constant.TAG, e.getMessage(), e);
+            }
+        }
+    }
+
+    private void processAttendeeData(JSONArray results) throws JSONException {
+        /*
+        *  [
+            {
+                "colorBrightness": "50",
+                "colorHue": "120",
+                "colorSaturation": "100",
+                "createdAt": "2016-03-28T21:51:04.169Z",
+                "music": "rap",
+                "name": "Chad",
+                "objectId": "E6AhpFi4sc",
+                "updatedAt": "2016-03-31T16:07:47.129Z"
+            },
+        *
+        * */
+
+        if (results.length() == 0) {
+            return;
+        }
+
+        Model.getInstance().updateVipInfo(results.getJSONObject(0));
+        updateLastSyncTimestamp(Table.Attendee);
     }
 
     private void processConfigData(JSONArray results) throws JSONException {
@@ -274,6 +346,32 @@ public final class SyncManager {
         bus.post(new SyncCompleteEvent.ParseCompany());
     }
 
+    private void processParseItemData(Table table, JSONArray array) throws JSONException {
+        final EventBus bus = EventBus.getDefault();
+
+
+        switch (table) {
+            case Survey:
+                for (int i = 0; i < array.length(); i++) {
+                    bus.post(new SaveRequest.Survey(new Survey(array.getJSONObject(i))));
+                }
+                break;
+            case Question:
+                for (int i = 0; i < array.length(); i++) {
+                    bus.post(new SaveRequest.Question(new Question(array.getJSONObject(i))));
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException();
+        }
+
+
+        updateLastSyncTimestamp(table);
+        if (BuildConfig.DEBUG) {
+            Log.i(Constant.TAG, "Received " + array.length() + " " + table.name() + "s.");
+        }
+    }
+
     private void processLocationData(JSONArray array) throws JSONException {
 
         final Model model = Model.getInstance();
@@ -316,7 +414,9 @@ public final class SyncManager {
                     OkHttpClient client = new OkHttpClient();
                     Response res = client.newCall(request).execute();
 
-                    if (BuildConfig.DEBUG) Log.v(Constant.TAG, request + ", Status: " + res.code());
+                    if (BuildConfig.DEBUG) {
+                        Log.v(Constant.TAG, request + ", Status: " + res.code());
+                    }
 
                     JSONObject data = new JSONObject(res.body().string());
 
