@@ -19,6 +19,8 @@ public final class IOUtils {
     public static final String SUFFIX_NOTIFICATION = ".notification";
     public static final String SUFFIX_COORDINATES = ".coordinates";
     public static final String SUFFIX_AGENDA_ITEM = ".agenda_item";
+    public static final String SUFFIX_SURVEY = ".survey";
+    public static final String SUFFIX_QUESTION = ".question";
 
     public static final String IMG_SUFFIX_JPG = ".jpg";
     public static final String IMG_SUFFIX_PNG = ".png";
@@ -38,6 +40,14 @@ public final class IOUtils {
     }
 
     private IOUtils() {
+    }
+
+    public static File createSurveyFile(Context context, String id) {
+        return new File(context.getFilesDir(), id + SUFFIX_SURVEY);
+    }
+
+    public static File createQuestionFile(Context context, String id) {
+        return new File(context.getFilesDir(), id + SUFFIX_QUESTION);
     }
 
     public static File createSponsorFile(Context context, String id) {

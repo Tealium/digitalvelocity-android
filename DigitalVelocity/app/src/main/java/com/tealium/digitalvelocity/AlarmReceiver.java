@@ -70,8 +70,10 @@ public final class AlarmReceiver extends BroadcastReceiver {
             return; // no change
         }
 
-        if (BuildConfig.DEBUG) Log.d(Constant.TAG, String.format(
-                Locale.ROOT, "Scheduling to scan %02d00 - %02d00", startHour, stopHour));
+        if (BuildConfig.DEBUG) {
+            Log.d(Constant.TAG, String.format(
+                    Locale.ROOT, "Scheduling to scan %02d00 - %02d00", startHour, stopHour));
+        }
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, startHour);
@@ -108,7 +110,7 @@ public final class AlarmReceiver extends BroadcastReceiver {
                 if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
                     final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
                     if (state == BluetoothAdapter.STATE_ON) {
-                        if(BuildConfig.DEBUG) Log.d(Constant.TAG, "! Bluetooth turned on");
+                        if (BuildConfig.DEBUG) Log.d(Constant.TAG, "! Bluetooth turned on");
                         Util.attemptToStartMonitoringBeacons(context);
                     }
                 }
@@ -117,6 +119,11 @@ public final class AlarmReceiver extends BroadcastReceiver {
     }
 
     public static boolean isInMonitoringWindow() {
+
+        if (BuildConfig.OVERRIDE_BEACON) {
+            return true;
+        }
+
         final long now = System.currentTimeMillis();
         final Model model = Model.getInstance();
         final long startDate = model.getMonitoringStartDate();
@@ -132,8 +139,10 @@ public final class AlarmReceiver extends BroadcastReceiver {
             return false;
         }
 
-        if (BuildConfig.DEBUG) Log.d(Constant.TAG, String.format(Locale.ROOT,
-                "Ranging allowed (%d < now=%d < %d)", startDate, now, endDate));
+        if (BuildConfig.DEBUG) {
+            Log.d(Constant.TAG, String.format(Locale.ROOT,
+                    "Ranging allowed (%d < now=%d < %d)", startDate, now, endDate));
+        }
 
         return true;
     }

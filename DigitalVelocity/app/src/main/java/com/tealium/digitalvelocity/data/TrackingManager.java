@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.tealium.beacon.EstimoteManager;
 import com.tealium.beacon.event.BeaconEntered;
@@ -21,6 +22,7 @@ import com.tealium.digitalvelocity.event.TraceUpdateEvent;
 import com.tealium.digitalvelocity.event.TrackEvent;
 import com.tealium.digitalvelocity.event.TrackUpdateEvent;
 import com.tealium.digitalvelocity.event.UsageDataToggle;
+import com.tealium.digitalvelocity.util.Constant;
 import com.tealium.digitalvelocity.util.Util;
 import com.tealium.digitalvelocity.view.Dialogs;
 import com.tealium.library.Tealium;
@@ -157,19 +159,30 @@ public final class TrackingManager implements Application.ActivityLifecycleCallb
 
     @SuppressWarnings("unused")
     public void onEventBackgroundThread(BeaconEntered event) {
-        Map<String, String> data = new HashMap<>(mStaticData.size() + 3);
+
+        final Model model = Model.getInstance();
+        final int possibleAdditionalDataSourceCount = 12;
+
+        Map<String, Object> data = new HashMap<>(mStaticData.size() + possibleAdditionalDataSourceCount);
         data.putAll(mStaticData);
+        data.putAll(model.getVipData());
+
         data.put("beacon_id", event.getId());
         data.put("event_name", "enter_poi");
         data.put("beacon_rssi", "" + event.getRssi());
+
         addDynamicKeys(data);
 
         safeTealiumTrackEvent("enter_poi", data);
+
+        if (BuildConfig.DEBUG) {
+            Log.d(Constant.TAG, "# BEACON ENTER: {id:" + event.getId() + ", rssi:" + event.getRssi() + '}');
+        }
     }
 
     @SuppressWarnings("unused")
     public void onEventBackgroundThread(BeaconUpdate event) {
-        Map<String, String> data = new HashMap<>(mStaticData.size() + 3);
+        Map<String, Object> data = new HashMap<>(mStaticData.size() + 3);
         data.putAll(mStaticData);
         data.put("beacon_id", event.getId());
         data.put("event_name", "in_poi");
@@ -177,11 +190,15 @@ public final class TrackingManager implements Application.ActivityLifecycleCallb
         addDynamicKeys(data);
 
         safeTealiumTrackEvent("in_poi", data);
+
+        if (BuildConfig.DEBUG) {
+            Log.d(Constant.TAG, "# BEACON UPDATE: {id:" + event.getId() + ", rssi:" + event.getRssi() + '}');
+        }
     }
 
     @SuppressWarnings("unused")
     public void onEventBackgroundThread(BeaconExited event) {
-        Map<String, String> data = new HashMap<>(mStaticData.size() + 3);
+        Map<String, Object> data = new HashMap<>(mStaticData.size() + 3);
         data.putAll(mStaticData);
         data.put("beacon_id", event.getId());
         data.put("event_name", "exit_poi");
@@ -189,6 +206,10 @@ public final class TrackingManager implements Application.ActivityLifecycleCallb
         addDynamicKeys(data);
 
         safeTealiumTrackEvent("exit_poi", data);
+
+        if (BuildConfig.DEBUG) {
+            Log.d(Constant.TAG, "# BEACON EXIT: {id:" + event.getId() + ", rssi:" + event.getRssi() + '}');
+        }
     }
 
     @SuppressWarnings("unused")
@@ -285,7 +306,7 @@ public final class TrackingManager implements Application.ActivityLifecycleCallb
                 .add("event_name", "m_sleep"));
     }
 
-    private void addDynamicKeys(Map<String, String> data) {
+    private void addDynamicKeys(Map<String, Object> data) {
         if (!mHasBluetoothLE || !Util.isBluetoothEnabled()) {
             data.put(Key.BEACON_DETECTION_DISABLED, "" + true);
         }

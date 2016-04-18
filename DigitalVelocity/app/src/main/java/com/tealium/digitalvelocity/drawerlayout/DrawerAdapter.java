@@ -1,35 +1,35 @@
 package com.tealium.digitalvelocity.drawerlayout;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.tealium.digitalvelocity.R;
 
-public class DrawerAdapter extends BaseAdapter {
+public final class DrawerAdapter extends BaseAdapter {
 
-    private final Activity activity;
-    private final LayoutInflater layoutInflater;
+    private final Activity mActivity;
+    private final LayoutInflater mLayoutInflater;
+    private final DrawerItem[] mDrawerItems;
 
     public DrawerAdapter(Activity activity) {
-        if ((this.activity = activity) == null) {
+        if ((mActivity = activity) == null) {
             throw new IllegalArgumentException();
         }
-        this.layoutInflater = LayoutInflater.from(this.activity);
+        mLayoutInflater = LayoutInflater.from(mActivity);
+        mDrawerItems = DrawerItem.values();
     }
 
     @Override
     public int getCount() {
-        return DrawerItem.values().length;
+        return mDrawerItems.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return DrawerItem.values()[position];
+        return mDrawerItems[position];
     }
 
     @Override
@@ -40,18 +40,20 @@ public class DrawerAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        TextView label = (TextView) convertView;
-        if (label == null) {
-            label = (TextView) this.layoutInflater.inflate(R.layout.item_drawerlayout, parent, false);
+        final ViewHolder viewHolder;
+
+        if (convertView == null) {
+            convertView = mLayoutInflater.inflate(R.layout.item_drawerlayout, parent, false);
+            convertView.setTag(viewHolder = new ViewHolder(convertView));
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        DrawerItem item = DrawerItem.values()[position];
+        final DrawerItem item = mDrawerItems[position];
+        final boolean isCurrent = mActivity.getClass().equals(item.getActivityClass());
 
-        label.setText(item.toString());
-        if (this.activity.getClass().equals(item.getActivityClass())) {
-            label.setTextColor(Color.WHITE);
-        }
+        viewHolder.setItem(item, isCurrent);
 
-        return label;
+        return convertView;
     }
 }

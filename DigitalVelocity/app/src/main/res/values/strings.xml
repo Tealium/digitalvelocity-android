@@ -1,18 +1,7 @@
 <resources>
     <string name="app_name">Digital Velocity</string>
 
-    <string name="hello_world">Hello world!</string>
-
     <string name="menu_drawerlayout_hamburger_title">Navigation</string>
-
-    <string-array name="drawerlayout_items">
-        <item>Welcome</item>
-        <item>Agenda</item>
-        <item>Event Location</item>
-        <item>Notifications</item>
-        <item>Sponsors</item>
-        <item>Contact</item>
-    </string-array>
 
     <string name="actionbar_logo_contentdescription">Digital Velocity Logo</string>
     <string name="title_activity_welcome">Welcome</string>
@@ -23,6 +12,8 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_event_location">Location</string>
     <string name="title_activity_demo">Demo</string>
+    <string name="title_activity_survey">Surveys</string>
+    <string name="title_activity_survey_detail">Survey</string>
     <string name="menu_modal_close_title">Close</string>
     <string name="title_activity_email">EmailActivity</string>
     <string name="agenda_detail_menu_close_title">Close</string>
@@ -30,8 +21,11 @@
     <string name="email_input_hint">(email address)</string>
     <string name="email_label_text">Convention Sign in</string>
     <string name="email_button_enter_title">ENTER</string>
+    <string name="email_prompt">Please enter your registered e-mail address.</string>
+    <string name="email_malformed_input">I\'m sorry, I don\'t understand \"%1$s\"</string>
 
     <string name="drawerlayout_layout_button_settings_text">&#xf013;</string>
+    <string name="drawerlayout_chat_unavailable">Chat is not available at this time</string>
 
     <string name="settings_email_label_text">@string/email_label_text</string>
     <string name="settings_email_input_hint">@string/email_input_hint</string>
@@ -84,6 +78,9 @@
     <string name="demo_not_running_toast">Not running demo</string>
     <string name="demo_running_toast_format">Running demo %1$s</string>
 
+    <string name="survey_square_unchecked">&#xf096;</string>
+    <string name="survey_square_checked">&#xf046;</string>
+
     <string name="dialog_bluetooth_prompt_title">Please enable bluetooth</string>
     <string name="dialog_bluetooth_prompt_icon_text">&#xf1d1;</string>
     <string name="dialog_bluetooth_prompt_message">Enable this feature to gain access to exclusive experiences at Digital Velocity.</string>
@@ -105,6 +102,17 @@
     <string name="agenda_label_nofavs_text">No Favorites</string>
     <string name="title_activity_chat_load">ChatLoadActivity</string>
     <string name="snowshoe_label_loading_text">Loading Passport View</string>
+    <string name="actionbar_hamburger_contentDescription">Navigation</string>
+    <string name="actionbar_imageview_favorites_contentDescription">Favorites Toggle</string>
+    <string name="item_sponsor_button_demo_text">DEMO</string>
+    <string name="item_surveydetail_submit_text">SUBMIT</string>
+    <string name="surveydetail_incomplete">Please answer all questions</string>
+    <string name="surveydetail_already_completed">This survey has already been completed</string>
+    <string name="surveydetail_completed">Survey complete!</string>
+
+    <string name="fa_circle">&#xf111;</string>
+    <string name="fa_circle_o">&#xf10c;</string>
+    <string name="fa_dot_circle_o">&#xf192;</string>
 
 
 </resources>

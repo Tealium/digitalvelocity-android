@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.tealium.digitalvelocity.view.DVTextView
+        android:id="@+id/item_surveydetail_question_label_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textColor="#000"
+        android:textSize="@dimen/item_title_textsize" />
+
+    <com.tealium.digitalvelocity.view.DVRadioGroup
+        android:id="@+id/item_surveydetail_question_group_answers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+</LinearLayout>

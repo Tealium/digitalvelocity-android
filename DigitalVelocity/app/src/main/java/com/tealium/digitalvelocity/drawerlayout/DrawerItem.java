@@ -10,33 +10,61 @@ import com.tealium.digitalvelocity.LocationActivity;
 import com.tealium.digitalvelocity.NotificationsActivity;
 import com.tealium.digitalvelocity.SnowshoeActivity;
 import com.tealium.digitalvelocity.SponsorsActivity;
+import com.tealium.digitalvelocity.SurveyActivity;
+import com.tealium.digitalvelocity.data.Model;
 
-public enum DrawerItem {
+public final class DrawerItem {
 
-    // TODO: localize
-    WELCOME("Welcome", SnowshoeActivity.class),
-    AGENDA("Agenda", AgendaActivity.class),
-    EVENT_LOCATION("Event Location", LocationActivity.class),
-    NOTIFICATIONS("Notifications", NotificationsActivity.class),
-    SPONSORS("Sponsors", SponsorsActivity.class),
-    CONTACT("Contact", ContactActivity.class),
-    DEMO("Demo", DemoActivity.class),
-    CHAT("Chat", null);
+    private final String mName;
+    private final Class<? extends Activity> mActivityClass;
 
-    private final String name;
-    private final Class<? extends Activity> activityClass;
-
-    DrawerItem(String name, Class<? extends Activity> activityClass) {
-        this.name = name;
-        this.activityClass = activityClass;
+    private DrawerItem(String name, Class<? extends Activity> activityClass) {
+        mName = name;
+        mActivityClass = activityClass;
     }
 
     public Class<? extends Activity> getActivityClass() {
-        return activityClass;
+        return mActivityClass;
     }
 
     @Override
     public String toString() {
-        return this.name;
+        return mName;
     }
+
+    public static synchronized DrawerItem[] values() {
+        if (Model.getInstance().isUsageDataEnabled()) {
+            return new DrawerItem[]{
+                    WELCOME,
+                    AGENDA,
+                    EVENT_LOCATION,
+                    NOTIFICATIONS,
+                    SPONSORS,
+                    CONTACT,
+                    DEMO,
+                    SURVEY
+            };
+        }
+
+        return new DrawerItem[]{
+                WELCOME,
+                AGENDA,
+                EVENT_LOCATION,
+                NOTIFICATIONS,
+                SPONSORS,
+                CONTACT,
+                SURVEY
+        };
+    }
+
+    public static final DrawerItem WELCOME = new DrawerItem("Welcome", SnowshoeActivity.class);
+    public static final DrawerItem AGENDA = new DrawerItem("Agenda", AgendaActivity.class);
+    public static final DrawerItem EVENT_LOCATION = new DrawerItem("Event Location", LocationActivity.class);
+    public static final DrawerItem NOTIFICATIONS = new DrawerItem("Notifications", NotificationsActivity.class);
+    public static final DrawerItem SPONSORS = new DrawerItem("Sponsors", SponsorsActivity.class);
+    public static final DrawerItem CONTACT = new DrawerItem("Contact", ContactActivity.class);
+    public static final DrawerItem DEMO = new DrawerItem("Demo", DemoActivity.class);
+    public static final DrawerItem SURVEY = new DrawerItem("Survey", SurveyActivity.class);
 }
+
+

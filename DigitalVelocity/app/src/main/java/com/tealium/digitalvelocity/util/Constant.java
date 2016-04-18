@@ -5,6 +5,7 @@ public final class Constant {
     private Constant() {
     }
 
+    public final static String VIP_PREFERENCES = "vip_preferences";
     public final static String AGENDA_FAVORITES = "agenda_favorites";
 
     public static class IMG_QUEUE {
@@ -17,6 +18,17 @@ public final class Constant {
         }
 
         public static final String NAME = "main";
+        public static final String KEY_SURVEY_PREFIX = "survey_";
+        public static final String KEY_SURVEY_QUESTION_PREFIX = "question_";
+
+        public static final String KEY_VIP_COLOR_BRIGHTNESS = "vip_color_brightness";
+        public static final String KEY_VIP_COLOR_HUE = "vip_color_hue";
+        public static final String KEY_VIP_COLOR_SATURATION = "vip_color_saturation";
+        public static final String KEY_VIP_MUSIC = "vip_music";
+        public static final String KEY_VIP_NAME = "vip_name";
+        public static final String KEY_VIP_VIDEO = "vip_video";
+        public static final String KEY_VIP_IMAGE = "vip_image";
+        public static final String KEY_VIP_ID = "vip_id";
 
         public static final String KEY_ALARM_HOUR_START = "alarm_hour_start";
         public static final String KEY_ALARM_HOUR_STOP = "alarm_hour_stop";
@@ -32,11 +44,14 @@ public final class Constant {
 
         public static final String KEY_IS_PARSE_PUSH_REGISTERED = "is_parse_push_registered";
 
+        public static final String KEY_LAST_SYNC_ATTENDEE = "last_sync_attendee";
         public static final String KEY_LAST_SYNC_CONFIG = "last_sync_config";
         public static final String KEY_LAST_SYNC_CATEGORY = "last_sync_category";
         public static final String KEY_LAST_SYNC_EVENT = "last_sync_event";
         public static final String KEY_LAST_SYNC_LOCATION = "last_sync_location";
         public static final String KEY_LAST_SYNC_COMPANY = "last_sync_company";
+        public static final String KEY_LAST_SYNC_SURVEY = "last_sync_survey";
+        public static final String KEY_LAST_SYNC_QUESTION = "last_sync_question";
 
         public static final String KEY_MONITORING_START_HOUR = "monitoring_start_hour";
         public static final String KEY_MONITORING_START_DATE = "monitoring_start_date";

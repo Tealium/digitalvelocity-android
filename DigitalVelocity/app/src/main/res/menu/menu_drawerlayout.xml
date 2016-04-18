@@ -1,20 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!--<item
-        android:id="@+id/menu_drawerlayout_save"
-        android:icon="@android:drawable/ic_menu_save"
-        android:title="Save"
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction,HardcodedText" />-->
-
     <item
         android:id="@+id/menu_drawerlayout_hamburger"
         android:icon="@drawable/hamburger"
         android:orderInCategory="100"
         android:title="@string/menu_drawerlayout_hamburger_title"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/menu_drawerlayout_filter_favorites"

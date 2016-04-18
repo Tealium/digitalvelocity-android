@@ -6,7 +6,9 @@ import com.tealium.digitalvelocity.data.gson.AgendaItem;
 import com.tealium.digitalvelocity.data.gson.Coordinates;
 import com.tealium.digitalvelocity.data.gson.Floor;
 import com.tealium.digitalvelocity.data.gson.Notification;
+import com.tealium.digitalvelocity.data.gson.Question;
 import com.tealium.digitalvelocity.data.gson.Sponsor;
+import com.tealium.digitalvelocity.data.gson.Survey;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -35,6 +37,18 @@ public class LoadedEvent {
 
         public Collection<T> getItems() {
             return items;
+        }
+    }
+
+    public static final class Surveys extends DataList<Survey> {
+        public Surveys(Collection<Survey> items) {
+            super(items);
+        }
+    }
+
+    public static final class Questions extends DataList<Question> {
+        public Questions(Collection<Question> items) {
+            super(items);
         }
     }
 
