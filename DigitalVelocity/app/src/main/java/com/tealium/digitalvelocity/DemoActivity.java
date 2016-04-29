@@ -24,7 +24,7 @@ public final class DemoActivity extends DrawerLayoutActivity {
 
         findViewById(R.id.demo_save_button)
                 .setOnClickListener(createSaveClickListener());
-        findViewById(R.id.demo_trace_label)
+        findViewById(R.id.demo_trace_button_info)
                 .setOnClickListener(createASLabelListener());
 
         final Model model = Model.getInstance();

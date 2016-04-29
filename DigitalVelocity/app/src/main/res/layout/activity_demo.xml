@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,79 +11,101 @@
         android:layout_height="match_parent"
         custom:src="@mipmap/banquet_hall" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:showDividers="middle"
-        android:divider="@drawable/demo_divider"
-        android:layout_margin="30dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:padding="30dp">
 
-        <TextView
-            android:id="@+id/demo_account_label"
-            style="@style/label"
-            android:text="@string/demo_account_label_text" />
-
-        <EditText
-            android:id="@+id/demo_account_input"
-            style="@style/input"
-            android:selectAllOnFocus="true"
-            android:hint="@string/demo_account_input_hint"
-            android:imeOptions="actionNext"
-            android:inputType="text" />
-
-        <TextView
-            android:id="@+id/demo_profile_label"
-            style="@style/label"
-            android:text="@string/demo_profile_label_text" />
-
-        <EditText
-            android:id="@+id/demo_profile_input"
-            style="@style/input"
-            android:selectAllOnFocus="true"
-            android:hint="@string/demo_profile_input_hint"
-            android:imeOptions="actionNext"
-            android:inputType="text" />
-
-        <TextView
-            android:id="@+id/demo_env_label"
-            style="@style/label"
-            android:text="@string/demo_env_label_text" />
-
-        <EditText
-            android:id="@+id/demo_env_input"
-            style="@style/input"
-            android:selectAllOnFocus="true"
-            android:hint="@string/demo_env_input_hint"
-            android:imeOptions="actionNext"
-            android:inputType="text" />
-
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#000" />
+            android:layout_height="wrap_content"
+            android:divider="@drawable/demo_divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
 
-        <TextView
-            android:id="@+id/demo_trace_label"
-            style="@style/label"
-            android:text="@string/demo_trace_label_text"
-            android:textColor="#55f" />
+            <TextView
+                android:id="@+id/demo_account_label"
+                style="@style/label"
+                android:text="@string/demo_account_label_text" />
 
-        <EditText
-            android:id="@+id/demo_trace_input"
-            style="@style/input"
-            android:selectAllOnFocus="true"
-            android:hint="@string/demo_trace_input_hint"
-            android:imeOptions="actionDone"
-            android:inputType="number" />
+            <EditText
+                android:id="@+id/demo_account_input"
+                style="@style/input"
+                android:hint="@string/demo_account_input_hint"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:selectAllOnFocus="true" />
 
-        <Button
-            android:id="@+id/demo_save_button"
-            style="@style/button"
-            android:layout_marginTop="50dp"
-            android:text="@string/demo_save_button_text" />
+            <TextView
+                android:id="@+id/demo_profile_label"
+                style="@style/label"
+                android:text="@string/demo_profile_label_text" />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/demo_profile_input"
+                style="@style/input"
+                android:hint="@string/demo_profile_input_hint"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:selectAllOnFocus="true" />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/demo_env_label"
+                style="@style/label"
+                android:text="@string/demo_env_label_text" />
+
+            <EditText
+                android:id="@+id/demo_env_input"
+                style="@style/input"
+                android:hint="@string/demo_env_input_hint"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:selectAllOnFocus="true" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/demo_trace_label"
+                    style="@style/label"
+                    android:layout_weight="1"
+                    android:text="@string/demo_trace_label_text" />
+
+                <com.tealium.digitalvelocity.view.FontAwesomeView
+                    android:id="@+id/demo_trace_button_info"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0"
+                    android:gravity="center"
+                    android:text="@string/demo_trace_button_info_text"
+                    android:textColor="#fff"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/demo_trace_input"
+                style="@style/input"
+                android:hint="@string/demo_trace_input_hint"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:selectAllOnFocus="true" />
+
+            <Button
+                android:id="@+id/demo_save_button"
+                style="@style/button"
+                android:layout_marginTop="50dp"
+                android:text="@string/demo_save_button_text" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</FrameLayout>

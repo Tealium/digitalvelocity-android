@@ -5,89 +5,89 @@ import android.support.annotation.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public final class AgendaItem extends ParseItem implements Comparable<AgendaItem> {
 
-    private String title;
-    private String subtitle;
-    private String description;
-    private String url;
-    private String imageURL;
-    private String locationId;
-    private String fontAwesomeValue;
-    private Category category;
-    private String roomName;
-    private int start;
-    private int end;
+    private String mTitle;
+    private String mSubtitle;
+    private String mDescription;
+    private String mUrl;
+    private String mImageUrl;
+    private String mLocationId;
+    private String mFontAwesomeValue;
+    private Category mCategory;
+    private String mRoomName;
+    private long mStart;
+    private long mEnd;
 
     public AgendaItem(JSONObject o, Category category) throws JSONException {
         super(o);
 
-        this.title = o.getString("title");
-        this.category = category;
-        this.start = o.getInt("start");
-        this.end = o.getInt("end");
-        this.subtitle = o.optString("subTitle", null);
-        this.locationId = o.optString("locationId", null);
-        this.url = o.optString("url", null);
-        this.description = o.optString("description", null);
-        this.fontAwesomeValue = o.optString("imageFontAwesome", null);
-        this.roomName = o.optString("roomName", null);
+        mStart = extractTimeStamp(o.getJSONObject("startDate"));
+        mEnd = extractTimeStamp(o.getJSONObject("endDate"));
+
+        mTitle = o.getString("title");
+        mCategory = category;
+        mSubtitle = o.optString("subTitle", null);
+        mLocationId = o.optString("locationId", null);
+        mUrl = o.optString("url", null);
+        mDescription = o.optString("description", null);
+        mFontAwesomeValue = o.optString("imageFontAwesome", null);
+        mRoomName = o.optString("roomName", null);
 
         JSONObject imageData = o.optJSONObject("imageData");
         if (imageData != null) {
-            this.imageURL = imageData.optString("url", null);
+            mImageUrl = imageData.optString("url", null);
         }
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public String getSubtitle() {
-        return subtitle;
+        return mSubtitle;
     }
 
     public String getTimeLocDescription() {
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.ROOT);
         return String.format(Locale.ROOT,
-                "%d:%02d - %d:%02d%s",
-                this.start / 100,
-                this.start % 100,
-                this.end / 100,
-                this.end % 100,
-                (this.roomName == null ? "" : " | " + roomName));
+                "%s - %s%s",
+                format.format(new Date(mStart)),
+                format.format(new Date(mEnd)),
+                (mRoomName == null ? "" : " | " + mRoomName));
     }
 
     public Category getCategory() {
-        return category;
+        return mCategory;
     }
 
     public String getUrl() {
-        return url;
+        return mUrl;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public String getImageURL() {
-        return imageURL;
+        return mImageUrl;
     }
 
     public String getFontAwesomeValue() {
-        return fontAwesomeValue;
+        return mFontAwesomeValue;
     }
 
     public String getLocationId() {
-        return locationId;
+        return mLocationId;
     }
 
     @Override
     public int compareTo(@NonNull AgendaItem another) {
-        return this.start - another.start;
+        return (int) (mStart - another.mStart);
     }
-
-
 }
 

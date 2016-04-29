@@ -13,6 +13,8 @@ import com.tealium.digitalvelocity.data.gson.AgendaItem;
 import com.tealium.digitalvelocity.event.LoadRequest;
 import com.tealium.digitalvelocity.event.LoadedEvent;
 import com.tealium.digitalvelocity.event.SyncCompleteEvent;
+import com.tealium.digitalvelocity.event.TrackEvent;
+import com.tealium.library.DataSources;
 
 import de.greenrobot.event.EventBus;
 
@@ -131,6 +133,12 @@ public final class AgendaActivity extends DrawerLayoutActivity {
                 }
 
                 final AgendaItem agendaItem = (AgendaItem) o;
+
+                EventBus.getDefault().post(TrackEvent.createLinkTrackEvent()
+                        .add(DataSources.Key.LINK_ID, "agenda_selected")
+                        .add("agenda_title", agendaItem.getTitle())
+                        .add("agenda_subtitle", agendaItem.getSubtitle())
+                        .add("agenda_objectid", agendaItem.getId()));
 
                 if (agendaItem.getUrl() != null) {
                     startActivity(new Intent(AgendaActivity.this, WebViewActivity.class)

@@ -29,7 +29,7 @@
         <item name="android:paddingBottom">8dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/input_text_size</item>
-        <item name="android:background">#a6aaa9</item>
+        <item name="android:colorBackground">@color/button_background</item>
     </style>
 
     <!--Duplicated button style because it prevented a widget styled this way to be selected with sonItemClick-->
@@ -78,5 +78,12 @@
         <item name="android:layout_height">50dp</item>
         <item name="android:gravity">center</item>
     </style>
-
+    <style name="Theme.Transparent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 </resources>

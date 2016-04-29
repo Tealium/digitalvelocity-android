@@ -1,7 +1,6 @@
 package com.tealium.digitalvelocity.data;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Application;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,8 +13,6 @@ import com.tealium.beacon.event.BeaconEntered;
 import com.tealium.beacon.event.BeaconExited;
 import com.tealium.beacon.event.BeaconUpdate;
 import com.tealium.digitalvelocity.BuildConfig;
-import com.tealium.digitalvelocity.R;
-import com.tealium.digitalvelocity.WelcomeActivity;
 import com.tealium.digitalvelocity.event.DemoChangeEvent;
 import com.tealium.digitalvelocity.event.SyncRequest;
 import com.tealium.digitalvelocity.event.TraceUpdateEvent;
@@ -24,7 +21,6 @@ import com.tealium.digitalvelocity.event.TrackUpdateEvent;
 import com.tealium.digitalvelocity.event.UsageDataToggle;
 import com.tealium.digitalvelocity.util.Constant;
 import com.tealium.digitalvelocity.util.Util;
-import com.tealium.digitalvelocity.view.Dialogs;
 import com.tealium.library.Tealium;
 
 import java.util.HashMap;
@@ -45,7 +41,6 @@ public final class TrackingManager implements Application.ActivityLifecycleCallb
     private final Application mApplication;
 
     private boolean mIsInForeground;
-    private AlertDialog mBluetoothPrompt;
     private long mLastPause;
 
     public TrackingManager(Application application) {
@@ -99,9 +94,7 @@ public final class TrackingManager implements Application.ActivityLifecycleCallb
         }
 
         // App name must be the launcher activity's label to show the app correctly
-        final String screenTitle = activity instanceof WelcomeActivity ?
-                activity.getString(R.string.title_activity_welcome) :
-                Util.getActivityTitle(activity);
+        final String screenTitle = Util.getActivityTitle(activity);
 
         EventBus.getDefault().post(
                 TrackEvent.createViewTrackEvent()
@@ -113,9 +106,6 @@ public final class TrackingManager implements Application.ActivityLifecycleCallb
     public void onActivityPaused(Activity activity) {
         mLastPause = System.currentTimeMillis();
         mMainHandler.postDelayed(mSleepRunnable, 10000);
-        if (mBluetoothPrompt != null) {
-            mBluetoothPrompt.dismiss();
-        }
     }
 
     @Override
@@ -283,13 +273,6 @@ public final class TrackingManager implements Application.ActivityLifecycleCallb
 
         Model model = Model.getInstance();
         model.resumeImageDownloads();
-
-        if (mHasBluetoothLE &&
-                Util.hasBluetooth() &&
-                !Util.isBluetoothEnabled() &&
-                model.canPromptBluetooth()) {
-            (mBluetoothPrompt = Dialogs.createBluetoothPrompt(activity)).show();
-        }
 
         EventBus bus = EventBus.getDefault();
         bus.post(new SyncRequest());

@@ -3,11 +3,12 @@ package com.tealium.beacon;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.os.RemoteException;
-import android.util.Log;
 
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
+import com.estimote.sdk.SystemRequirementsHelper;
+
+import java.util.UUID;
 
 
 public final class EstimoteManager {
@@ -21,6 +22,10 @@ public final class EstimoteManager {
     private final Processor mProcessor;
     private final Logger mLogger;
     private boolean mIsListening;
+
+    public static boolean hasNecessaryPermissions(Context context) {
+        return SystemRequirementsHelper.checkAllPermissions(context);
+    }
 
     public static EstimoteManager getInstance() {
         return sInstance;
@@ -36,7 +41,8 @@ public final class EstimoteManager {
     private EstimoteManager(Context context, String proximityUuid) {
 
         mContext = context.getApplicationContext();
-        mAllEstimoteBeacons = new Region("regionId", proximityUuid, null, null);
+        final UUID uuid = UUID.fromString(proximityUuid);
+        mAllEstimoteBeacons = new Region("regionId", uuid, null, null);
 
         if (Constant.DEBUG) {
             mLogger = new Logger(context);
@@ -45,9 +51,9 @@ public final class EstimoteManager {
             mLogger = null;
         }
 
-
         BeaconManager beaconManager = new BeaconManager(context);
-        if (beaconManager.hasBluetooth()) {
+
+        if (SystemRequirementsHelper.isBluetoothLeAvailable(context)) {
             mBeaconManager = beaconManager;
             mBeaconManager.setForegroundScanPeriod(1000, Defaults.POI_SCAN_DELAY_PERIOD);
             mBeaconManager.setRangingListener(this.mProcessor = new Processor(mContext));
@@ -136,13 +142,13 @@ public final class EstimoteManager {
             public void onServiceReady() {
                 String message = System.currentTimeMillis() + ",";
 
-                try {
+                //try {
                     mBeaconManager.startRanging(mAllEstimoteBeacons);
                     message += "ranging_start\r\n";
-                } catch (RemoteException e) {
+                /*} catch (RemoteException e) {
                     message += e + "\r\n";
                     Log.e(Constant.TAG, "Cannot start ranging", e);
-                }
+                }*/
 
                 if (mLogger != null) {
                     mLogger.log(message);
@@ -166,13 +172,13 @@ public final class EstimoteManager {
         String message = System.currentTimeMillis() + ",";
 
         // Should be invoked in #onStop.
-        try {
+        //try {
             mBeaconManager.stopRanging(mAllEstimoteBeacons);
             message += "ranging_stop\r\n";
-        } catch (RemoteException e) {
+        /*} catch (RemoteException e) {
             message += e + "\r\n";
             Log.e(Constant.TAG, "Cannot stop but it does not matter now", e);
-        }
+        }*/
 
         mIsListening = false;
         if (mLogger != null) {

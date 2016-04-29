@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="20dp"
+    android:background="#7000"
+    android:id="@+id/dialog_bluetooth_prompt_label_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_toEndOf="@id/dialog_bluetooth_prompt_icon"
+    android:layout_toRightOf="@id/dialog_bluetooth_prompt_icon"
+    android:text="@string/dialog_bluetooth_prompt_title"
+    android:textColor="#ddd"
+    android:textSize="20sp" />

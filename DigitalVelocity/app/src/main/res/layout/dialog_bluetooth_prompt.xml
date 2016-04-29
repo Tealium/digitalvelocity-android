@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:background="#7000"
+    android:padding="20dp">
 
     <com.tealium.digitalvelocity.view.FontAwesomeView
         android:id="@+id/dialog_bluetooth_prompt_icon"
@@ -19,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        android:textColor="#000"
+        android:textColor="#ddd"
         android:layout_toRightOf="@id/dialog_bluetooth_prompt_icon"
         android:layout_toEndOf="@id/dialog_bluetooth_prompt_icon"
         android:text="@string/dialog_bluetooth_prompt_message" />
@@ -30,7 +31,7 @@
         android:layout_height="40dp"
         android:gravity="start|center_vertical"
         android:textSize="14sp"
-        android:textColor="#555"
+        android:textColor="#aaa"
         android:layout_below="@id/dialog_bluetooth_prompt_label_message"
         android:text="@string/dialog_bluetooth_prompt_checkbox_text" />
 

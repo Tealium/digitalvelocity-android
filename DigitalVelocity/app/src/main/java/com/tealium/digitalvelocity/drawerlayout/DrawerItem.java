@@ -11,7 +11,6 @@ import com.tealium.digitalvelocity.NotificationsActivity;
 import com.tealium.digitalvelocity.SnowshoeActivity;
 import com.tealium.digitalvelocity.SponsorsActivity;
 import com.tealium.digitalvelocity.SurveyActivity;
-import com.tealium.digitalvelocity.data.Model;
 
 public final class DrawerItem {
 
@@ -33,18 +32,6 @@ public final class DrawerItem {
     }
 
     public static synchronized DrawerItem[] values() {
-        if (Model.getInstance().isUsageDataEnabled()) {
-            return new DrawerItem[]{
-                    WELCOME,
-                    AGENDA,
-                    EVENT_LOCATION,
-                    NOTIFICATIONS,
-                    SPONSORS,
-                    CONTACT,
-                    DEMO,
-                    SURVEY
-            };
-        }
 
         return new DrawerItem[]{
                 WELCOME,
@@ -53,8 +40,10 @@ public final class DrawerItem {
                 NOTIFICATIONS,
                 SPONSORS,
                 CONTACT,
+                DEMO,
                 SURVEY
         };
+
     }
 
     public static final DrawerItem WELCOME = new DrawerItem("Welcome", SnowshoeActivity.class);

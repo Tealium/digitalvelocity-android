@@ -4,7 +4,8 @@
     android:background="@color/actionbar_black"
     android:orientation="vertical">
 
-    <include layout="@layout/actionbar" />
+    <include
+        layout="@layout/actionbar" />
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawerlayout_root"

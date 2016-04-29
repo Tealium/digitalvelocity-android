@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_bluetooth_prompt_title">Please enable bluetooth and location</string>
+    <string name="dialog_bluetooth_prompt_icon_text">&#xf1d1;</string>
+    <string name="dialog_bluetooth_prompt_message">Enable these features to gain access to exclusive experiences at Digital Velocity.</string>
+    <string name="dialog_bluetooth_prompt_checkbox_text">Don\'t show this message again</string>
+    <string name="dialog_bluetooth_prompt_negative">Not Now</string>
+    <string name="dialog_bluetooth_prompt_positive">Enable Bluetooth and Location</string>
+
+</resources>

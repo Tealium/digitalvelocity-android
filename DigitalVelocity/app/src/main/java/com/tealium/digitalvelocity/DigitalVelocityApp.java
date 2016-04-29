@@ -1,19 +1,18 @@
 package com.tealium.digitalvelocity;
 
-import android.app.Application;
 import android.os.SystemClock;
+import android.support.multidex.MultiDexApplication;
 import android.util.Log;
-
 
 import com.tealium.digitalvelocity.data.Model;
 import com.tealium.digitalvelocity.data.TrackingManager;
-import com.tealium.digitalvelocity.util.Constant;
 import com.tealium.digitalvelocity.push.gcm.PushListenerService;
+import com.tealium.digitalvelocity.util.Constant;
 
 import de.greenrobot.event.EventBus;
 
 // Beacon consumer only works if Application implements it.
-public final class DigitalVelocityApp extends Application {
+public final class DigitalVelocityApp extends MultiDexApplication {
 
 
     static {

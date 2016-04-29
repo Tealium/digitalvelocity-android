@@ -1,7 +1,15 @@
 package com.tealium.digitalvelocity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.SystemClock;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +18,27 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.estimote.sdk.SystemRequirementsHelper;
+import com.tealium.digitalvelocity.data.Model;
 import com.tealium.digitalvelocity.drawerlayout.DrawerAdapter;
 import com.tealium.digitalvelocity.drawerlayout.DrawerItem;
+import com.tealium.digitalvelocity.view.Dialogs;
 
 public class DrawerLayoutActivity extends Activity {
 
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
+    // 5 minutes
+    private static final long ASK_LOCATION_TIMEOUT = 5L * 60L * 1000L;
+
+    private AlertDialog mBluetoothPrompt;
     private DrawerLayout mDrawerLayout;
     private View mDrawer;
     private TextView mTitleLabel;
     private boolean mFilterFavorites;
+    // for all instances
+    private static long mLastTimeLocationRequested;
 
     @Override
     public void setContentView(int layoutResID) {
@@ -40,6 +59,88 @@ public class DrawerLayoutActivity extends Activity {
                 .setOnClickListener(createSettingsClickListener());
 
         setupActionBar();
+    }
+
+    @SuppressLint("NewApi") // Too stupid to realize that the API won't be used in pre-M
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        final boolean isShowingLoginScreen = Model.getInstance().getUserEmail() == null;
+        final long now = SystemClock.elapsedRealtime();
+
+        if (isShowingLoginScreen || (now - mLastTimeLocationRequested) < ASK_LOCATION_TIMEOUT) {
+            return;
+        }
+
+        mLastTimeLocationRequested = now;
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (SystemRequirementsHelper.isBluetoothLeAvailable(this) &&
+                    !SystemRequirementsHelper.isBluetoothEnabled(this) &&
+                    Model.getInstance().canPromptBluetooth()) {
+                (mBluetoothPrompt = Dialogs.createBluetoothPrompt(this)).show();
+            }
+            return;
+        }
+
+        if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                    REQUEST_LOCATION_PERMISSION);
+
+        } else if (SystemRequirementsHelper.isBluetoothLeAvailable(this) &&
+                !SystemRequirementsHelper.isBluetoothEnabled(this)) {
+            // TODO Externalize
+            Toast.makeText(
+                    this,
+                    "Using bluetooth for location services",
+                    Toast.LENGTH_LONG).show();
+            BluetoothAdapter.getDefaultAdapter().enable();
+
+            if (!SystemRequirementsHelper.checkAllPermissions(this)) {
+                Toast.makeText(
+                        this,
+                        "Please enable Location",
+                        Toast.LENGTH_LONG).show();
+            }
+        } else if (!SystemRequirementsHelper.checkAllPermissions(this)) {
+            Toast.makeText(
+                    this,
+                    "Please enable Location",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        if (mBluetoothPrompt != null) {
+            mBluetoothPrompt.dismiss();
+        }
+        super.onPause();
+    }
+
+    @Override
+    @TargetApi(Build.VERSION_CODES.M)
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode != REQUEST_LOCATION_PERMISSION) {
+            return;
+        }
+
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // TODO Externalize
+            Toast.makeText(this, "Using bluetooth for location services", Toast.LENGTH_LONG).show();
+            BluetoothAdapter.getDefaultAdapter().enable();
+            if (!SystemRequirementsHelper.checkAllPermissions(this)) {
+                Toast.makeText(
+                        this,
+                        "Please enable Location",
+                        Toast.LENGTH_LONG).show();
+            }
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            // TODO Externalize
+            Toast.makeText(this, "Enable location to gain access to exclusive experiences at Digital Velocity.", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

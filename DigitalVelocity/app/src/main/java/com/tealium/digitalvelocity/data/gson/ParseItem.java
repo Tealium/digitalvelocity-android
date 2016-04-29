@@ -6,50 +6,53 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class ParseItem {
 
     private static final SimpleDateFormat format =
             new SimpleDateFormat("yyyy-LL-dd'T'HH:mm:ss.SSS'Z'", Locale.ROOT);
+    {
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+    }
 
-
-    private String id;
-    private boolean isVisible;
-    private long createdAt;
-    private long updatedAt;
+    private String mId;
+    private boolean mIsVisible;
+    private long mCreatedAt;
+    private long mUpdatedAt;
 
     public ParseItem(String id, boolean isVisible, long createdAt, long updatedAt) {
-        this.id = id;
-        this.isVisible = isVisible;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        mId = id;
+        mIsVisible = isVisible;
+        mCreatedAt = createdAt;
+        mUpdatedAt = updatedAt;
     }
 
     public ParseItem(JSONObject o) throws JSONException {
-        this.id = o.getString("objectId");
-        this.isVisible = o.optBoolean("visible", true);
+        mId = o.getString("objectId");
+        mIsVisible = o.optBoolean("visible", true);
         try {
-            this.createdAt = format.parse(o.getString("createdAt")).getTime();
-            this.updatedAt = format.parse(o.getString("updatedAt")).getTime();
+            mCreatedAt = format.parse(o.getString("createdAt")).getTime();
+            mUpdatedAt = format.parse(o.getString("updatedAt")).getTime();
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
 
     public final String getId() {
-        return id;
+        return mId;
     }
 
     public long getCreatedAt() {
-        return createdAt;
+        return mCreatedAt;
     }
 
     public long getUpdatedAt() {
-        return updatedAt;
+        return mUpdatedAt;
     }
 
     public final boolean isVisible() {
-        return isVisible;
+        return mIsVisible;
     }
 
     protected static long extractTimeStamp(JSONObject dateObject) throws JSONException {

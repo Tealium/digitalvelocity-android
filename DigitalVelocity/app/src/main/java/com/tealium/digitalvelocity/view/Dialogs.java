@@ -18,17 +18,19 @@ public final class Dialogs {
 
     public static AlertDialog createBluetoothPrompt(Context context) {
 
-        View view = LayoutInflater.from(context)
-                .inflate(R.layout.dialog_bluetooth_prompt, null);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+
+        View titleView = inflater.inflate(R.layout.dialog_bluetooth_prompt_title, null);
+        View view = inflater.inflate(R.layout.dialog_bluetooth_prompt, null);
 
         ((CheckBox) view.findViewById(R.id.dialog_bluetooth_prompt_checkbox))
                 .setOnCheckedChangeListener(createBluetoothPromptCheckboxListener());
 
-        DialogInterface.OnClickListener listener = createBluetoothPromptListener();
+        DialogInterface.OnClickListener listener = createBluetoothPromptListener(context);
 
         return new AlertDialog.Builder(context)
+                .setCustomTitle(titleView)
                 .setView(view)
-                .setTitle(R.string.dialog_bluetooth_prompt_title)
                 .setNegativeButton(R.string.dialog_bluetooth_prompt_negative, listener)
                 .setPositiveButton(R.string.dialog_bluetooth_prompt_positive, listener)
                 .create();
@@ -43,7 +45,7 @@ public final class Dialogs {
         };
     }
 
-    private static DialogInterface.OnClickListener createBluetoothPromptListener() {
+    private static DialogInterface.OnClickListener createBluetoothPromptListener(final Context context) {
         return new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
