@@ -129,7 +129,7 @@ public final class AgendaDetailActivity extends Activity {
         this.titleLabel.setText(mTitle = item.getTitle());
         this.subtitleLabel.setText(mSubtitle = item.getSubtitle());
         this.subtitleLabel.setVisibility(Util.isEmptyOrNull(item.getSubtitle()) ? View.GONE : View.VISIBLE);
-        this.timeLocLabel.setText(item.getTimeLocDescription());
+        this.timeLocLabel.setText(item.getTimeLocDescription(this));
         this.descLabel.setText(item.getDescription());
         this.favoriteCheckBox.setChecked(Model.getInstance().isAgendaFavorite(item));
         this.favoriteCheckBox.setOnCheckedChangeListener(createCheckedChangeListener(item));

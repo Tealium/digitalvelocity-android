@@ -62,7 +62,7 @@ final class ViewHolder implements View.OnClickListener, Animation.AnimationListe
 
         mTitleLabel.setText(item.getTitle());
 
-        mSubtitleLabel.setText(item.getTimeLocDescription());
+        mSubtitleLabel.setText(item.getTimeLocDescription(mSubtitleLabel.getContext()));
 
         mLocationButton.setVisibility((mLocationId = item.getLocationId()) == null ?
                 View.GONE : View.VISIBLE);
