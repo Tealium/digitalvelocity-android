@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.tealium.digitalvelocity.data.Model;
 
+import java.net.URLEncoder;
+
 
 public final class ContactActivity extends DrawerLayoutActivity {
 
@@ -55,13 +57,18 @@ public final class ContactActivity extends DrawerLayoutActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String twitterUri = Model.getInstance().getContactTwitter();
-                if (twitterUri == null) {
+                final String hashTag = Model.getInstance().getContactTwitter();
+                if (hashTag == null) {
                     Toast.makeText(v.getContext(), R.string.contact_no_twitter, Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitterUri))
+
+
+                    Intent intent = new Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://twitter.com/search?q=" + URLEncoder.encode("#" + hashTag, "utf-8")))
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } catch (Throwable t) {

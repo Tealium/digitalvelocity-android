@@ -1,6 +1,8 @@
 package com.tealium.digitalvelocity.data.gson;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.format.DateFormat;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,8 +54,11 @@ public final class AgendaItem extends ParseItem implements Comparable<AgendaItem
         return mSubtitle;
     }
 
-    public String getTimeLocDescription() {
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.ROOT);
+    public String getTimeLocDescription(Context context) {
+
+        final SimpleDateFormat format = new SimpleDateFormat(
+                (DateFormat.is24HourFormat(context) ? "HH:mm" : "hh:mm"), Locale.ROOT);
+
         return String.format(Locale.ROOT,
                 "%s - %s%s",
                 format.format(new Date(mStart)),
@@ -87,6 +92,10 @@ public final class AgendaItem extends ParseItem implements Comparable<AgendaItem
 
     @Override
     public int compareTo(@NonNull AgendaItem another) {
+        if(mStart == another.mStart) {
+            return mTitle.compareTo(another.mTitle);
+        }
+
         return (int) (mStart - another.mStart);
     }
 }

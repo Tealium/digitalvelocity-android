@@ -130,7 +130,11 @@ public class DrawerLayoutActivity extends Activity {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // TODO Externalize
             Toast.makeText(this, "Using bluetooth for location services", Toast.LENGTH_LONG).show();
-            BluetoothAdapter.getDefaultAdapter().enable();
+
+            if(BluetoothAdapter.getDefaultAdapter() != null) {
+                BluetoothAdapter.getDefaultAdapter().enable();
+            }
+
             if (!SystemRequirementsHelper.checkAllPermissions(this)) {
                 Toast.makeText(
                         this,

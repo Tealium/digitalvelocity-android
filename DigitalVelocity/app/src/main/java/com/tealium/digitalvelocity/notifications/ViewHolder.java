@@ -1,5 +1,6 @@
 package com.tealium.digitalvelocity.notifications;
 
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,7 +19,10 @@ public class ViewHolder {
     private final TextView timeLabel;
 
     public ViewHolder(View view) {
-        this.format = new SimpleDateFormat("EEEE H:mm", Locale.US);
+
+        this.format = new SimpleDateFormat(
+                (DateFormat.is24HourFormat(view.getContext()) ? "EEEE HH:mm" : "EEEE h:mm a"),
+                Locale.ROOT);
         this.messageLabel = (TextView) view.findViewById(R.id.item_notifications_label_message);
         this.timeLabel = (TextView) view.findViewById(R.id.item_notifications_label_time);
     }
