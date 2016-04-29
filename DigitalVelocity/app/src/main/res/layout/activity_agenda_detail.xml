@@ -39,7 +39,7 @@
                 android:gravity="center"
                 android:text="X"
                 android:textColor="#777"
-                android:textSize="180dp"
+                android:textSize="170dp"
                 tools:ignore="HardcodedText" />
 
             <CheckBox

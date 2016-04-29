@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +20,10 @@ import com.tealium.digitalvelocity.data.Model;
 import com.tealium.digitalvelocity.data.gson.AgendaItem;
 import com.tealium.digitalvelocity.event.LoadRequest;
 import com.tealium.digitalvelocity.event.LoadedEvent;
+import com.tealium.digitalvelocity.event.TrackEvent;
+import com.tealium.digitalvelocity.util.Constant;
 import com.tealium.digitalvelocity.util.Util;
+import com.tealium.library.DataSources;
 
 import java.io.File;
 
@@ -38,6 +42,10 @@ public final class AgendaDetailActivity extends Activity {
     private TextView timeLocLabel;
     private TextView descLabel;
     private CheckBox favoriteCheckBox;
+
+    private String mTitle;
+    private String mSubtitle;
+    private String mObjectId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,8 +125,9 @@ public final class AgendaDetailActivity extends Activity {
 
         AgendaItem item = event.getItem();
 
-        this.titleLabel.setText(item.getTitle());
-        this.subtitleLabel.setText(item.getSubtitle());
+        mObjectId = item.getId();
+        this.titleLabel.setText(mTitle = item.getTitle());
+        this.subtitleLabel.setText(mSubtitle = item.getSubtitle());
         this.subtitleLabel.setVisibility(Util.isEmptyOrNull(item.getSubtitle()) ? View.GONE : View.VISIBLE);
         this.timeLocLabel.setText(item.getTimeLocDescription());
         this.descLabel.setText(item.getDescription());
@@ -135,12 +144,20 @@ public final class AgendaDetailActivity extends Activity {
 
             if (imgExists) {
                 this.imageView.setImageURI(Uri.fromFile(file));
+                if (BuildConfig.DEBUG) {
+                    Log.d(Constant.TAG, "#Settimg image: " + file);
+                }
+            } else if (BuildConfig.DEBUG) {
+                Log.d(Constant.TAG, "# No Image, no FA");
             }
         } else {
             this.imageView.setVisibility(View.GONE);
             this.faLabel.setVisibility(View.VISIBLE);
 
             this.faLabel.setText(Html.fromHtml("&#x" + item.getFontAwesomeValue() + ';'));
+            if (BuildConfig.DEBUG) {
+                Log.d(Constant.TAG, "# Setting FA to &#x" + item.getFontAwesomeValue() + ';');
+            }
         }
     }
 
@@ -151,6 +168,13 @@ public final class AgendaDetailActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Model.getInstance().setAgendaFavorite(item, isChecked);
+
+                EventBus.getDefault().post(TrackEvent.createLinkTrackEvent()
+                        .add(DataSources.Key.LINK_ID, "agenda_favorite_toggled")
+                        .add("agenda_objectid", mObjectId)
+                        .add("agenda_title", mTitle)
+                        .add("agenda_subtitle", mSubtitle)
+                        .add("agenda_favorite", String.valueOf(isChecked)));
 
                 if (isChecked) {
                     Toast.makeText(

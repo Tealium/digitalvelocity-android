@@ -39,7 +39,8 @@ public final class LocationActivity extends DrawerLayoutActivity {
         ((RadioGroup) this.findViewById(R.id.location_radiogroup_categories))
                 .setOnCheckedChangeListener(this.createCategoryChangeListener());
 
-        this.setController(this.selectedController = mapController);
+        //this.setController(this.selectedController = mapController);
+        (this.selectedController = mapController).select();
     }
 
     @Override

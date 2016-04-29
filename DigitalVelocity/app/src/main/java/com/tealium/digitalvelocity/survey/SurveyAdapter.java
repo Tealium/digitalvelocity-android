@@ -10,6 +10,7 @@ import com.tealium.digitalvelocity.data.gson.Survey;
 import com.tealium.digitalvelocity.event.LoadedEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SurveyAdapter extends BaseAdapter {
@@ -57,6 +58,7 @@ public class SurveyAdapter extends BaseAdapter {
     public void onEventMainThread(LoadedEvent.Surveys event) {
         mSurveys.clear();
         mSurveys.addAll(event.getItems());
+        Collections.sort(mSurveys);
         notifyDataSetChanged();
     }
 

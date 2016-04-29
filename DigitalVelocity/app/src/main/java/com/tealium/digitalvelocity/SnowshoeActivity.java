@@ -1,5 +1,6 @@
 package com.tealium.digitalvelocity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
@@ -26,6 +28,7 @@ public final class SnowshoeActivity extends DrawerLayoutActivity {
 
     private ViewState mViewState;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,14 @@ public final class SnowshoeActivity extends DrawerLayoutActivity {
     }
 
     private void loadPage() {
+
+        final String snowshoeUrl = Model.getInstance().getSnowShoeUrl();
+
+        if (!TextUtils.isEmpty(snowshoeUrl)) {
+            mViewState.mWebView.loadUrl(snowshoeUrl);
+            return;
+        }
+
         mViewState.mWebView.loadUrl(new Uri.Builder()
                 .scheme("http")
                 .authority(Model.getInstance().getKeyManager().getSnowshoeAuthority())

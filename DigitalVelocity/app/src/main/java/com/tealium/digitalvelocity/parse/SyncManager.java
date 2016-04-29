@@ -172,6 +172,9 @@ public final class SyncManager {
                 case Attendee:
                     processAttendeeData(results);
                     break;
+                case Contact:
+                    Model.getInstance().setContactInfo(results.length() == 0 ? null : results.getJSONObject(0));
+                    break;
             }
         } catch (Throwable t) {
             Log.e(Constant.TAG, null, t);
@@ -239,6 +242,10 @@ public final class SyncManager {
             performRequest(ParseHelper.createQuestionRequest(), Table.Question);
         }
 
+        if (readyToSync(now, syncRate, Table.Contact)) {
+            performRequest(ParseHelper.createContactRequest(), Table.Contact);
+        }
+
         if (readyToSync(now, syncRate, Table.Attendee) && model.getUserEmail() != null) {
             try {
                 performRequest(ParseHelper.createAttendeeRequest(model.getUserEmail()), Table.Attendee);
@@ -294,8 +301,9 @@ public final class SyncManager {
         editor.putLong(Constant.SP.KEY_LAST_SYNC_CONFIG, now).apply();
         Table.Config.setLastSyncTS(now);
 
-        if (BuildConfig.DEBUG) Log.i(Constant.TAG, "Received " +
-                results.length() + " Config keys.");
+        if (BuildConfig.DEBUG) {
+            Log.i(Constant.TAG, "Received " + results.length() + " Config keys.");
+        }
 
         this.syncData();
     }
@@ -308,18 +316,27 @@ public final class SyncManager {
         Category category;
         AgendaItem newItem;
 
-        for (int i = 0; i < this.mSyncData.getAgendaData().length(); i++) {
-            item = this.mSyncData.getAgendaData().getJSONObject(i);
-            category = this.mSyncData.getCategories().get(item.getString("categoryId"));
-            bus.post(new SaveRequest.AgendaItem(newItem = new AgendaItem(item, category)));
-            model.enqueueImageDownload(newItem.getId(), newItem.getImageURL());
+        for (int i = 0; i < mSyncData.getAgendaData().length(); i++) {
+            item = mSyncData.getAgendaData().getJSONObject(i);
+            try {
+                category = mSyncData.getCategories().get(item.getString("categoryId"));
+                bus.post(new SaveRequest.AgendaItem(newItem = new AgendaItem(item, category)));
+                model.enqueueImageDownload(newItem.getId(), newItem.getImageURL());
+            } catch (Exception e) {
+                if (BuildConfig.DEBUG) {
+                    Log.e(Constant.TAG, "Error parsing " + item, e);
+                }
+            }
         }
 
         updateLastSyncTimestamp(Table.Event);
 
-        if (BuildConfig.DEBUG) Log.i(Constant.TAG, "Received " +
-                this.mSyncData.getAgendaData().length() + " Events.");
-        this.mSyncData.setAgendaData(null);
+        if (BuildConfig.DEBUG) {
+            Log.i(Constant.TAG, "Received " + mSyncData.getAgendaData().length() + " Events.");
+        }
+
+        // Data is processed, nulling it out
+        mSyncData.setAgendaData(null);
         bus.post(new SyncCompleteEvent.ParseEvent());
     }
 

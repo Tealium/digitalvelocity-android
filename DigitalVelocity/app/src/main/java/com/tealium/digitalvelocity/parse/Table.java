@@ -12,7 +12,8 @@ enum Table {
     Location(Constant.SP.KEY_LAST_SYNC_LOCATION),
     Event(Constant.SP.KEY_LAST_SYNC_EVENT),
     Survey(Constant.SP.KEY_LAST_SYNC_SURVEY),
-    Question(Constant.SP.KEY_LAST_SYNC_QUESTION);
+    Question(Constant.SP.KEY_LAST_SYNC_QUESTION),
+    Contact(Constant.SP.KEY_LAST_SYNC_CONTACT);
 
     private final String spKey;
     private long lastSyncTS;

@@ -35,16 +35,14 @@ public final class ParseHelper {
         private Column() {
         }
 
-        public static final String COLOR_BRIGHTNESS = "vip_color_brightness";
-        public static final String COLOR_HUE = "vip_color_hue";
-        public static final String COLOR_SATURATION = "vip_color_saturation";
-        public static final String ID = "objectId";
-        public static final String IMAGE = "vip_image";
-        public static final String MUSIC = "vip_music";
-        public static final String NAME = "vip_name";
-        public static final String VIDEO = "vip_video";
+        public static final String WELCOME_URL = "welcomeURL";
+        public static final String FACEBOOK = "facebook";
+        public static final String EMAIL_HEADER = "emailHeader";
+        public static final String EMAIL_MESSAGE = "emailMessage";
+        public static final String TWITTER = "twitter";
+        public static final String PHONE_NUMBER = "phoneNumber";
+        public static final String EMAIL = "email";
         public static final String VISIBLE = "visible";
-
     }
 
     static {
@@ -54,11 +52,24 @@ public final class ParseHelper {
         FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
+    static Request createContactRequest() {
+        return createClassRequest("Contact",
+                Column.FACEBOOK + "," +
+                        Column.EMAIL_HEADER + "," +
+                        Column.EMAIL_MESSAGE + "," +
+                        Column.TWITTER + "," +
+                        Column.PHONE_NUMBER + "," +
+                        Column.EMAIL + "," +
+                        Column.VISIBLE + ",",
+                createWhereStatement(Table.Contact));
+    }
+
     static Request createConfigRequest() {
         return createClassRequest("Config",
                 "welcomeYear," +
                         "welcomeDescription," +
                         "welcomeSubtitle," +
+                        Column.WELCOME_URL + "," +
                         "purge," +
                         "syncRate," +
                         "rssiThreshold," +
@@ -79,7 +90,7 @@ public final class ParseHelper {
     }
 
     static Request createSurveyRequest() {
-        return createClassRequest("Survey", "title,questionIds", createWhereStatement(Table.Survey));
+        return createClassRequest("Survey", "title,questionIds,visible", createWhereStatement(Table.Survey));
     }
 
     static Request createQuestionRequest() {
@@ -94,8 +105,8 @@ public final class ParseHelper {
                         "url," +
                         "imageData," +
                         "imageFontAwesome," +
-                        "start," +
-                        "end," +
+                        "startDate," +
+                        "endDate," +
                         "categoryId," +
                         "locationId," +
                         "subTitle," +

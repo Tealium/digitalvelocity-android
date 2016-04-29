@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class Survey extends ParseItem {
+public final class Survey extends ParseItem implements Comparable<Survey> {
 
     private final String title;
     private final List<String> questionIds;
@@ -34,5 +34,10 @@ public final class Survey extends ParseItem {
             ids.add(questionIds.get(i).toString());
         }
         return ids;
+    }
+
+    @Override
+    public int compareTo(Survey another) {
+        return this.title.compareTo(another.title);
     }
 }

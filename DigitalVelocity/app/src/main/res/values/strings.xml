@@ -87,6 +87,7 @@
     <string name="dialog_bluetooth_prompt_checkbox_text">Don\'t show this message again</string>
     <string name="dialog_bluetooth_prompt_negative">Not Now</string>
     <string name="dialog_bluetooth_prompt_positive">Enable Bluetooth</string>
+
     <string name="item_agenda_image_content_description">Event Image</string>
     <string name="notifications_label_none_text">No notifications yet.</string>
     <string name="settings_image_background_content_description">TMU Class</string>
@@ -109,10 +110,15 @@
     <string name="surveydetail_incomplete">Please answer all questions</string>
     <string name="surveydetail_already_completed">This survey has already been completed</string>
     <string name="surveydetail_completed">Survey complete!</string>
-
+    <string name="contact_no_phone">Sorry, phone is not available at this time</string>
+    <string name="contact_no_twitter">Sorry, twitter link is not available at this time</string>
+    <string name="contact_no_facebook">Sorry, facebook link is not available at this time</string>
+    <string name="contact_no_email">Sorry, e-mail contact info is not available at this time</string>
     <string name="fa_circle">&#xf111;</string>
     <string name="fa_circle_o">&#xf10c;</string>
     <string name="fa_dot_circle_o">&#xf192;</string>
+    <string name="demo_trace_button_info_text">&#xf059;</string>
+    <string name="title_activity_permission">PermissionActivity</string>
 
 
 </resources>

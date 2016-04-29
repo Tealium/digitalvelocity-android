@@ -289,6 +289,10 @@ public final class Model {
         return PushManager.getGcmSenderId(mContext);
     }
 
+    public String getSnowShoeUrl() {
+        return mSharedPreferences.getString(Constant.SP.KEY_SNOWSHOE_URL, null);
+    }
+
     public long getMonitoringStartDate() {
         return mSharedPreferences.getLong(
                 Constant.SP.KEY_MONITORING_START_DATE, 0);
@@ -307,6 +311,7 @@ public final class Model {
     public void setConfig(JSONObject o) {
 
         mSharedPreferences.edit()
+                .putString(Constant.SP.KEY_SNOWSHOE_URL, o.optString(ParseHelper.Column.WELCOME_URL, null))
                 .putLong(Constant.SP.KEY_PARSE_SYNC_RATE, o.optLong("syncRate", 15) * 60000L)
                 .putString(Constant.SP.KEY_WELCOME_YEAR, o.optString("welcomeYear", null))
                 .putString(Constant.SP.KEY_WELCOME_DESCRIPTION, o.optString("welcomeDescription", null))
@@ -320,17 +325,13 @@ public final class Model {
                 // Estimote Manager
                 .putInt(Constant.SP.KEY_RSSI_THRESHOLD, o.optInt("rssiThreshold", Defaults.RSSI_THRESHOLD))
                 .putLong(Constant.SP.KEY_POI_IN_PERIOD,
-                        o.optLong("poiRefreshCycle",
-                                Defaults.POI_IN_PERIOD))
+                        o.optLong("poiRefreshCycle", Defaults.POI_IN_PERIOD))
                 .putLong(Constant.SP.KEY_POI_SCAN_DELAY_PERIOD,
-                        o.optLong("scanCycle",
-                                Defaults.POI_SCAN_DELAY_PERIOD))
+                        o.optLong("scanCycle", Defaults.POI_SCAN_DELAY_PERIOD))
                 .putLong(Constant.SP.KEY_POI_THRESHOLD_ENTER,
-                        o.optLong("enterThreshold",
-                                Defaults.POI_THRESHOLD_ENTER))
+                        o.optLong("enterThreshold", Defaults.POI_THRESHOLD_ENTER))
                 .putLong(Constant.SP.KEY_POI_THRESHOLD_EXIT,
-                        o.optLong("exitThreshold",
-                                Defaults.POI_THRESHOLD_EXIT))
+                        o.optLong("exitThreshold", Defaults.POI_THRESHOLD_EXIT))
                 .commit();
 
         this.updateEstimoteManager();
@@ -449,6 +450,73 @@ public final class Model {
                 .apply();
     }
 
+    public boolean isContactVisible() {
+        return mSharedPreferences.getBoolean(Constant.SP.KEY_CONTACT_VISIBLE, false);
+    }
+
+    public String getContactFacebook() {
+        return mSharedPreferences.getString(Constant.SP.KEY_CONTACT_FACEBOOK, null);
+    }
+
+    public String getContactEmailHeader() {
+        return mSharedPreferences.getString(Constant.SP.KEY_CONTACT_EMAIL_HEADER, null);
+    }
+
+    public String getContactEmailMessage() {
+        return mSharedPreferences.getString(Constant.SP.KEY_CONTACT_EMAIL_MESSAGE, null);
+    }
+
+    public String getContactEmail() {
+        return mSharedPreferences.getString(Constant.SP.KEY_CONTACT_EMAIL, null);
+    }
+
+    public String getContactPhoneNumber() {
+        return mSharedPreferences.getString(Constant.SP.KEY_CONTACT_PHONE_NUMBER, null);
+    }
+
+    public String getContactTwitter() {
+        return mSharedPreferences.getString(Constant.SP.KEY_CONTACT_TWITTER, null);
+    }
+
+    public void setContactInfo(JSONObject contactInfo) {
+        if (contactInfo == null) {
+            mSharedPreferences.edit()
+                    .remove(Constant.SP.KEY_CONTACT_EMAIL)
+                    .remove(Constant.SP.KEY_CONTACT_EMAIL_HEADER)
+                    .remove(Constant.SP.KEY_CONTACT_EMAIL_MESSAGE)
+                    .remove(Constant.SP.KEY_CONTACT_FACEBOOK)
+                    .remove(Constant.SP.KEY_CONTACT_PHONE_NUMBER)
+                    .remove(Constant.SP.KEY_CONTACT_TWITTER)
+                    .remove(Constant.SP.KEY_CONTACT_VISIBLE)
+                    .commit();
+            return;
+        }
+
+        mSharedPreferences.edit()
+                .putString(
+                        Constant.SP.KEY_CONTACT_EMAIL,
+                        contactInfo.optString(ParseHelper.Column.EMAIL, null))
+                .putString(
+                        Constant.SP.KEY_CONTACT_EMAIL_HEADER,
+                        contactInfo.optString(ParseHelper.Column.EMAIL_HEADER, null))
+                .putString(
+                        Constant.SP.KEY_CONTACT_EMAIL_MESSAGE,
+                        contactInfo.optString(ParseHelper.Column.EMAIL_MESSAGE, null))
+                .putString(
+                        Constant.SP.KEY_CONTACT_FACEBOOK,
+                        contactInfo.optString(ParseHelper.Column.FACEBOOK, null))
+                .putString(
+                        Constant.SP.KEY_CONTACT_PHONE_NUMBER,
+                        contactInfo.optString(ParseHelper.Column.PHONE_NUMBER, null))
+                .putString(
+                        Constant.SP.KEY_CONTACT_TWITTER,
+                        contactInfo.optString(ParseHelper.Column.TWITTER, null))
+                .putBoolean(
+                        Constant.SP.KEY_CONTACT_VISIBLE,
+                        contactInfo.optBoolean(ParseHelper.Column.VISIBLE, false))
+                .commit();
+    }
+
     /**
      * Removes the keys used to download fresh data, will download all data next sync (instead of updated-since).
      */
@@ -476,16 +544,21 @@ public final class Model {
                     connection.setDoInput(true);
                     connection.connect();
 
+                    /* Parse vended text/plain MIME type WTF?
                     final String contentType = connection.getContentType();
                     if (!contentType.startsWith("image/")) {
                         Log.e(Constant.TAG, "Error loading " + imageURI + ", unknown MIME type " + contentType);
                         mImgQueue.edit().remove(id).commit();
                         return null;
-                    }
+                    }*/
 
                     final File dst = new File(mContext.getFilesDir(), id + '.' +
-                            contentType.substring(
-                                    contentType.lastIndexOf("/") + 1, contentType.length()));
+                            imageURI.substring(imageURI.lastIndexOf('.') + 1));
+                    if (BuildConfig.DEBUG) {
+                        Log.d(Constant.TAG, "# Creating file " + dst);
+                    }
+                           /* contentType.substring(
+                                    contentType.lastIndexOf("/") + 1, contentType.length()));*/
 
                     InputStream in = connection.getInputStream();
                     FileOutputStream out = new FileOutputStream(dst);
@@ -514,6 +587,10 @@ public final class Model {
                 }
 
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+
+                .
+
+                        executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }
