@@ -80,7 +80,10 @@ public final class ParseHelper {
                         "enterThreshold," +
                         "exitThreshold," +
                         "scanCycle," +
-                        "poiRefreshCycle",
+                        "poiRefreshCycle," +
+                        "accountOverride," +
+                        "profileOverride," +
+                        "envOverride",
                 createWhereStatement(Table.Config));
     }
 

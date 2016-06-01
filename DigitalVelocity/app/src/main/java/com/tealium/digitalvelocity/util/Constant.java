@@ -50,6 +50,10 @@ public final class Constant {
         public static final String KEY_MONITORING_STOP_HOUR = "monitoring_stop_hour";
         public static final String KEY_MONITORING_STOP_DATE = "monitoring_stop_date";
 
+        public static final String KEY_OVERRIDE_TEALIUM_ACCOUNT = "override_tealium_account";
+        public static final String KEY_OVERRIDE_TEALIUM_PROFILE = "override_tealium_profile";
+        public static final String KEY_OVERRIDE_TEALIUM_ENV = "override_tealium_env";
+
         public static final String KEY_PARSE_SYNC_RATE = "parse_sync_rate";
         public static final String KEY_POI_THRESHOLD_ENTER = "poi_threshold_enter";
         public static final String KEY_POI_THRESHOLD_EXIT = "poi_threshold_exit";

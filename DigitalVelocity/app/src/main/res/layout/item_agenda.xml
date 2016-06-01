@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_agenda_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#fff"
@@ -27,7 +28,7 @@
         android:layout_alignRight="@id/item_agenda_image"
         android:layout_alignStart="@id/item_agenda_image"
         android:layout_alignTop="@id/item_agenda_image"
-        android:background="#fff"
+        android:background="#0000"
         android:contentDescription="@string/item_agenda_image_content_description"
         android:src="@mipmap/dv_logo_white" />
 

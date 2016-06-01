@@ -14,7 +14,7 @@ import de.greenrobot.event.EventBus;
 
 public final class SponsorsActivity extends DrawerLayoutActivity {
 
-    private SponsorAdapter adapter;
+    private SponsorAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,17 +22,17 @@ public final class SponsorsActivity extends DrawerLayoutActivity {
         setContentView(R.layout.activity_sponsors);
 
         ListView sponsorsListView = ((ListView) this.findViewById(R.id.sponsors_root));
-        sponsorsListView.setAdapter(this.adapter = new SponsorAdapter(this));
-        sponsorsListView.setOnItemClickListener(adapter);
-        sponsorsListView.setOnItemLongClickListener(adapter);
+        sponsorsListView.setAdapter(mAdapter = new SponsorAdapter(this));
+        sponsorsListView.setOnItemClickListener(mAdapter);
+        sponsorsListView.setOnItemLongClickListener(mAdapter);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         EventBus bus = EventBus.getDefault();
-        if (!bus.isRegistered(this.adapter)) {
-            bus.register(this.adapter);
+        if (!bus.isRegistered(mAdapter)) {
+            bus.register(mAdapter);
         }
 
         if (!bus.isRegistered(this)) {
@@ -49,14 +49,18 @@ public final class SponsorsActivity extends DrawerLayoutActivity {
     @Override
     protected void onStop() {
         EventBus bus = EventBus.getDefault();
-        bus.unregister(this.adapter);
+        bus.unregister(mAdapter);
         bus.unregister(this);
         super.onStop();
     }
 
     @SuppressWarnings("unused")
     public void onEventMainThread(LoadedEvent.Sponsors event) {
-        this.findViewById(R.id.sponsors_activity_indicator)
+
+        findViewById(R.id.sponsors_activity_indicator)
+                .setVisibility(View.GONE);
+
+        findViewById(R.id.sponsors_label_none)
                 .setVisibility(event.getItems().size() == 0 ? View.VISIBLE : View.GONE);
     }
 

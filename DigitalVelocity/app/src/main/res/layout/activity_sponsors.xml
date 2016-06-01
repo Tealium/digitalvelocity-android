@@ -8,6 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.tealium.digitalvelocity.view.DVTextViewSemiBold
+        style="@style/label_no_items"
+        android:id="@+id/sponsors_label_none"
+        android:text="@string/sponsors_label_none_text" />
+
     <ProgressBar
         android:id="@+id/sponsors_activity_indicator"
         android:layout_width="wrap_content"

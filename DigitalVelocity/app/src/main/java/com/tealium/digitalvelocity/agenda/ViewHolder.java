@@ -1,5 +1,6 @@
 package com.tealium.digitalvelocity.agenda;
 
+import android.os.Build;
 import android.text.Html;
 import android.view.View;
 import android.view.animation.Animation;
@@ -22,6 +23,7 @@ import de.greenrobot.event.EventBus;
 
 final class ViewHolder implements View.OnClickListener, Animation.AnimationListener, Callback {
 
+    private final View mRootView;
     private final ImageView mDefaultImageView;
     private final ImageView mImageView;
     private final TextView mFaLabel;
@@ -29,10 +31,13 @@ final class ViewHolder implements View.OnClickListener, Animation.AnimationListe
     private final TextView mSubtitleLabel;
     private final TextView mLocationButton;
     private final View mFavoriteImage;
+    private final int mColorPast;
+    private final int mColorFuture;
     private String mItemId;
     private String mLocationId;
 
     public ViewHolder(View view) {
+        mRootView = view.findViewById(R.id.item_agenda_root);
         mDefaultImageView = (ImageView) view.findViewById(R.id.item_agenda_image_default);
         mImageView = (ImageView) view.findViewById(R.id.item_agenda_image);
         mFaLabel = (TextView) view.findViewById(R.id.item_agenda_label_fa);
@@ -41,6 +46,14 @@ final class ViewHolder implements View.OnClickListener, Animation.AnimationListe
         mLocationButton = (TextView) view.findViewById(R.id.item_agenda_button_location);
         mFavoriteImage = view.findViewById(R.id.item_agenda_label_favorite);
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mColorPast = view.getResources().getColor(R.color.item_agenda_past, null);
+            mColorFuture = view.getResources().getColor(R.color.item_agenda_future, null);
+        } else {
+            mColorPast = view.getResources().getColor(R.color.item_agenda_past);
+            mColorFuture = view.getResources().getColor(R.color.item_agenda_future);
+        }
 
         view.findViewById(R.id.item_agenda_button_location).setOnClickListener(this);
     }
@@ -52,6 +65,10 @@ final class ViewHolder implements View.OnClickListener, Animation.AnimationListe
         if (item.getId().equals(mItemId)) {
             return;
         }
+
+        mRootView.setBackgroundColor(
+                (item.getEnd() < System.currentTimeMillis()) ?
+                        mColorPast : mColorFuture);
 
         if (mItemId != null) {
             Picasso.with(mImageView.getContext())
@@ -122,9 +139,12 @@ final class ViewHolder implements View.OnClickListener, Animation.AnimationListe
 
     @Override
     public void onSuccess() {
-        Animation a = AnimationUtils.loadAnimation(mDefaultImageView.getContext(), R.anim.fade_out_slow);
-        a.setAnimationListener(this);
-        mDefaultImageView.startAnimation(a);
+        Animation out = AnimationUtils.loadAnimation(mDefaultImageView.getContext(), R.anim.fade_out_slow);
+        Animation in = AnimationUtils.loadAnimation(mDefaultImageView.getContext(), R.anim.fade_in_slow);
+
+        out.setAnimationListener(this);
+        mDefaultImageView.startAnimation(out);
+        mImageView.startAnimation(in);
     }
 
     @Override

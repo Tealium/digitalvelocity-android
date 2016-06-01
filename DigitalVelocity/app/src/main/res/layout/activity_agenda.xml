@@ -8,6 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.tealium.digitalvelocity.view.DVTextViewSemiBold
+        style="@style/label_no_items"
+        android:id="@+id/agenda_label_none"
+        android:text="@string/agenda_label_none_text" />
+
     <ProgressBar
         android:id="@+id/agenda_activity_indicator"
         style="@android:style/Widget.Holo.Light.ProgressBar.Large"
@@ -20,10 +25,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textSize="18sp"
+        android:text="@string/agenda_label_nofavs_text"
         android:textColor="#700"
-        android:visibility="gone"
-        android:text="@string/agenda_label_nofavs_text" />
+        android:textSize="18sp"
+        android:visibility="gone" />
 
 </RelativeLayout>
 

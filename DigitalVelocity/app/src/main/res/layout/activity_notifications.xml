@@ -9,12 +9,8 @@
         android:background="#fff" />
 
     <com.tealium.digitalvelocity.view.DVTextViewSemiBold
+        style="@style/label_no_items"
         android:id="@+id/notifications_label_none"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textColor="#888"
-        android:layout_centerInParent="true"
         android:text="@string/notifications_label_none_text" />
 
 </RelativeLayout>

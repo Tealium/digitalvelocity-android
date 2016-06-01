@@ -23,59 +23,60 @@ public final class LocationActivity extends DrawerLayoutActivity {
     public static final int RESULT_BACK_PRESSED = 2;
     public static final String EXTRA_LOCATION_ID = "location_id";
 
-    private MapController mapController;
-    private LayoutController layoutController;
-    private BaseController selectedController;
-    private String locationId;
+    private MapController mMapController;
+    private LayoutController mLayoutController;
+    private BaseController mSelectedController;
+    private String mLocationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
-        this.mapController = new MapController(this);
-        this.layoutController = new LayoutController(this);
+        mMapController = new MapController(this);
+        mLayoutController = new LayoutController(this);
 
-        ((RadioGroup) this.findViewById(R.id.location_radiogroup_categories))
+        ((RadioGroup) findViewById(R.id.location_radiogroup_categories))
                 .setOnCheckedChangeListener(this.createCategoryChangeListener());
 
-        //this.setController(this.selectedController = mapController);
-        (this.selectedController = mapController).select();
+        (mSelectedController = mMapController).select();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        if (this.getIntent() != null) {
-            this.locationId = this.getIntent().getStringExtra(EXTRA_LOCATION_ID);
+        if (getIntent() != null) {
+            mLocationId = getIntent().getStringExtra(EXTRA_LOCATION_ID);
         }
 
         EventBus bus = EventBus.getDefault();
 
-        if (!bus.isRegistered(this.mapController)) {
-            bus.register(this.mapController);
+        if (!bus.isRegistered(mMapController)) {
+            bus.register(mMapController);
         }
 
-        if (!bus.isRegistered(this.layoutController)) {
-            bus.register(this.layoutController);
+        if (!bus.isRegistered(mLayoutController)) {
+            bus.register(mLayoutController);
         }
 
         if (!bus.isRegistered(this)) {
             bus.register(this);
         }
 
+        toggleActivityIndicator(true);
+
         bus.post(new LoadRequest.Coordinates());
         bus.post(new LoadRequest.Floors());
-
+        findViewById(R.id.location_label_none).setVisibility(View.GONE);
     }
 
     @Override
     protected void onStop() {
 
         EventBus bus = EventBus.getDefault();
-        bus.unregister(this.mapController);
-        bus.unregister(this.layoutController);
+        bus.unregister(mMapController);
+        bus.unregister(mLayoutController);
         bus.unregister(this);
 
         super.onStop();
@@ -84,13 +85,13 @@ public final class LocationActivity extends DrawerLayoutActivity {
 
     @Override
     public void onBackPressed() {
-        this.setResult(RESULT_BACK_PRESSED);
+        setResult(RESULT_BACK_PRESSED);
         super.onBackPressed();
     }
 
     private void setController(BaseController controller) {
-        this.selectedController.deselect();
-        (this.selectedController = controller).select();
+        mSelectedController.deselect();
+        (mSelectedController = controller).select();
     }
 
     private RadioGroup.OnCheckedChangeListener createCategoryChangeListener() {
@@ -99,10 +100,10 @@ public final class LocationActivity extends DrawerLayoutActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.location_radio_category_map:
-                        setController(mapController);
+                        setController(mMapController);
                         break;
                     case R.id.location_radio_category_layout:
-                        setController(layoutController);
+                        setController(mLayoutController);
                         break;
                 }
             }
@@ -112,41 +113,45 @@ public final class LocationActivity extends DrawerLayoutActivity {
     @SuppressWarnings("unused")
     public void onEventMainThread(LoadedEvent.CoordinateData event) {
 
-        this.toggleActivityIndicator(event.getItems().size());
+        if (mSelectedController == mMapController) {
+            toggleActivityIndicator(false);
+        }
 
-        if (this.locationId == null) {
+        if (mLocationId == null) {
             return;
         }
 
         for (Coordinates coords : event.getItems()) {
-            if (this.locationId.equals(coords.getId())) {
-                this.findViewById(R.id.location_radio_category_map).performClick();
-                this.mapController.selectLocation(this.locationId);
-                break;
+            if (mLocationId.equals(coords.getId())) {
+                findViewById(R.id.location_radio_category_map).performClick();
+                mMapController.selectLocation(mLocationId);
+                return;
             }
         }
 
-        Log.w(Constant.TAG, "Unknown coordinate: " + this.locationId);
+        Log.w(Constant.TAG, "Unknown coordinate: " + mLocationId);
     }
 
     @SuppressWarnings("unused")
     public void onEventMainThread(LoadedEvent.Floors event) {
 
-        this.toggleActivityIndicator(event.getItems().size());
+        if (mSelectedController == mLayoutController) {
+            toggleActivityIndicator(false);
+        }
 
-        if (this.locationId == null) {
+        if (mLocationId == null) {
             return;
         }
 
         for (Floor floor : event.getItems()) {
-            if (this.locationId.equals(floor.getId())) {
-                this.findViewById(R.id.location_radio_category_layout).performClick();
-                this.layoutController.selectLocation(this.locationId);
-                break;
+            if (mLocationId.equals(floor.getId())) {
+                findViewById(R.id.location_radio_category_layout).performClick();
+                mLayoutController.selectLocation(mLocationId);
+                return;
             }
         }
 
-        Log.w(Constant.TAG, "Unknown floor: " + this.locationId);
+        Log.w(Constant.TAG, "Unknown floor: " + mLocationId);
     }
 
     @SuppressWarnings("unused")
@@ -156,12 +161,12 @@ public final class LocationActivity extends DrawerLayoutActivity {
         bus.post(new LoadRequest.Floors());
     }
 
-    private void toggleActivityIndicator(int itemsSize) {
+    private void toggleActivityIndicator(boolean shouldShow) {
 
-        final View activityIndicator = this.findViewById(R.id.location_activity_indicator);
-        final View content = this.findViewById(R.id.location_content);
+        final View activityIndicator = findViewById(R.id.location_activity_indicator);
+        final View content = findViewById(R.id.location_content);
 
-        if (itemsSize == 0) {
+        if (shouldShow) {
             activityIndicator.setVisibility(View.VISIBLE);
             content.setVisibility(View.GONE);
         } else {

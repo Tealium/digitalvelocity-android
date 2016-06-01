@@ -90,6 +90,14 @@ public final class AgendaItem extends ParseItem implements Comparable<AgendaItem
         return mLocationId;
     }
 
+    public long getStart() {
+        return mStart;
+    }
+
+    public long getEnd() {
+        return mEnd;
+    }
+
     @Override
     public int compareTo(@NonNull AgendaItem another) {
         if(mStart == another.mStart) {

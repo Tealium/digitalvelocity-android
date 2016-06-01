@@ -89,7 +89,11 @@
     <string name="dialog_bluetooth_prompt_positive">Enable Bluetooth</string>
 
     <string name="item_agenda_image_content_description">Event Image</string>
-    <string name="notifications_label_none_text">No notifications yet.</string>
+    <string name="notifications_label_none_text">No notifications yet</string>
+    <string name="survey_label_none_text">No surveys yet</string>
+    <string name="agenda_label_none_text">Nothing yet</string>
+    <string name="location_label_none_text">No locations available</string>
+    <string name="sponsors_label_none_text">No sponsors currently</string>
     <string name="settings_image_background_content_description">TMU Class</string>
     <string name="sponsor_click_error_no_url">URL Not available for this sponsor.</string>
     <string name="settings_usage_label_text">Send app usage data</string>
@@ -99,7 +103,7 @@
     <string name="menu_filter_agenda_favorite_title">Favorites</string>
     <string name="item_agenda_label_favorite_contentDescription">Favorite Indicator</string>
     <string name="title_activity_snowshoe">SnowshoeActivity</string>
-    <string name="snowshoe_label_error_text">Uh-oh, passport is unavailable at this time.</string>
+    <string name="snowshoe_label_error_text">Please connect to the internet</string>
     <string name="agenda_label_nofavs_text">No Favorites</string>
     <string name="title_activity_chat_load">ChatLoadActivity</string>
     <string name="snowshoe_label_loading_text">Loading Passport View</string>

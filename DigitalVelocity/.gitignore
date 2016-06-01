@@ -8,6 +8,8 @@
 */build/*
 *.iml
 
+app/libs/keymanager-debug.aar
+
 push/google-services.json
-keymanager/src/main/assets/keys.json 
+keymanager/src/*/assets/keys.json 
 keymanager/src/*/res/values/keys.xml

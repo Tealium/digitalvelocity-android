@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.tealium.beacon.Defaults;
@@ -293,6 +294,18 @@ public final class Model {
         return mSharedPreferences.getString(Constant.SP.KEY_SNOWSHOE_URL, null);
     }
 
+    public String getTealiumAccount() {
+        return mSharedPreferences.getString(Constant.SP.KEY_OVERRIDE_TEALIUM_ACCOUNT, "tealium");
+    }
+
+    public String getTealiumProfile() {
+        return mSharedPreferences.getString(Constant.SP.KEY_OVERRIDE_TEALIUM_PROFILE, "digitalvelocity");
+    }
+
+    public String getTealiumEnv() {
+        return mSharedPreferences.getString(Constant.SP.KEY_OVERRIDE_TEALIUM_ENV, "BuildConfig.TEALIUM_ENV");
+    }
+
     public long getMonitoringStartDate() {
         return mSharedPreferences.getLong(
                 Constant.SP.KEY_MONITORING_START_DATE, 0);
@@ -310,7 +323,8 @@ public final class Model {
 
     public void setConfig(JSONObject o) {
 
-        mSharedPreferences.edit()
+
+        final SharedPreferences.Editor editor = mSharedPreferences.edit()
                 .putString(Constant.SP.KEY_SNOWSHOE_URL, o.optString(ParseHelper.Column.WELCOME_URL, null))
                 .putLong(Constant.SP.KEY_PARSE_SYNC_RATE, o.optLong("syncRate", 15) * 60000L)
                 .putString(Constant.SP.KEY_WELCOME_YEAR, o.optString("welcomeYear", null))
@@ -331,12 +345,30 @@ public final class Model {
                 .putLong(Constant.SP.KEY_POI_THRESHOLD_ENTER,
                         o.optLong("enterThreshold", Defaults.POI_THRESHOLD_ENTER))
                 .putLong(Constant.SP.KEY_POI_THRESHOLD_EXIT,
-                        o.optLong("exitThreshold", Defaults.POI_THRESHOLD_EXIT))
-                .commit();
+                        o.optLong("exitThreshold", Defaults.POI_THRESHOLD_EXIT));
+
+        setOrRemoveIfNull(editor, Constant.SP.KEY_OVERRIDE_TEALIUM_ACCOUNT, o.optString("accountOverride"));
+        setOrRemoveIfNull(editor, Constant.SP.KEY_OVERRIDE_TEALIUM_PROFILE, o.optString("profileOverride"));
+        setOrRemoveIfNull(editor, Constant.SP.KEY_OVERRIDE_TEALIUM_ENV, o.optString("envOverride"));
+
+        editor.commit();
 
         this.updateEstimoteManager();
 
         AlarmReceiver.setup(mContext);
+    }
+
+    /**
+     * @param editor non-null
+     * @param key    for persistence in the editor
+     * @param value  the value to write if not empty (empty string or null)
+     */
+    private static void setOrRemoveIfNull(SharedPreferences.Editor editor, String key, String value) {
+        if (TextUtils.isEmpty(value)) {
+            editor.remove(key);
+        } else {
+            editor.putString(key, value);
+        }
     }
 
     private void updateEstimoteManager() {
@@ -592,5 +624,24 @@ public final class Model {
                 .
 
                         executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    final static class Test {
+        private Test() {
+        }
+
+        static void setOrRemoveIfNull(
+                SharedPreferences.Editor editor,
+                String key,
+                String value) {
+            setOrRemoveIfNull(editor, key, value);
+        }
+
+        static void clear(Model model) {
+            model.mSharedPreferences.edit().clear().commit();
+            model.mImgQueue.edit().clear().commit();
+            model.mAgendaFavorites.edit().clear().commit();
+            model.mVipPreferences.edit().clear().commit();
+        }
     }
 }

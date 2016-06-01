@@ -25,13 +25,8 @@
 
     <com.tealium.digitalvelocity.view.DVTextViewSemiBold
         android:id="@+id/snowshoe_label_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:padding="3dp"
+        style="@style/label_no_items"
         android:text="@string/snowshoe_label_error_text"
-        android:textColor="#900"
-        android:textSize="18sp"
         android:visibility="gone" />
 
     <WebView

@@ -70,7 +70,7 @@ public class LayoutController extends BaseController implements View.OnClickList
     }
 
     @Override
-    protected int getOptionCount() {
+    public int getOptionCount() {
 
         final int count = mFloors.size();
 

@@ -15,6 +15,7 @@ import com.tealium.beacon.event.BeaconUpdate;
 import com.tealium.digitalvelocity.BuildConfig;
 import com.tealium.digitalvelocity.event.DemoChangeEvent;
 import com.tealium.digitalvelocity.event.SyncRequest;
+import com.tealium.digitalvelocity.event.TealiumConfigEvent;
 import com.tealium.digitalvelocity.event.TraceUpdateEvent;
 import com.tealium.digitalvelocity.event.TrackEvent;
 import com.tealium.digitalvelocity.event.TrackUpdateEvent;
@@ -73,6 +74,18 @@ public final class TrackingManager implements Application.ActivityLifecycleCallb
         if (userEmail != null) {
             mStaticData.put(Key.EMAIL, userEmail.toLowerCase(Locale.ROOT));
         }
+    }
+
+    /**
+     * @return visitorId if it exists or null
+     */
+    public static String getVisitorId() {
+        final Tealium tealium = Tealium.getInstance(TEALIUM_INSTANCE_MAIN);
+        if (tealium != null) {
+            return tealium.getDataSources().getVisitorId();
+        }
+
+        return null;
     }
 
     @Override
@@ -267,6 +280,28 @@ public final class TrackingManager implements Application.ActivityLifecycleCallb
         }
     }
 
+    @SuppressWarnings("unused")
+    public void onEventBackgroundThread(TealiumConfigEvent event) {
+
+        Tealium instance = Tealium.getInstance(TEALIUM_INSTANCE_MAIN);
+        if (instance != null) {
+            if (!TextUtils.equals(instance.getAccountName(), event.getAccountName()) ||
+                    !TextUtils.equals(instance.getProfileName(), event.getProfileName()) ||
+                    !TextUtils.equals(instance.getEnvironmentName(), event.getEnvName())) {
+                Tealium.destroyInstance(TEALIUM_INSTANCE_MAIN);
+            } else {
+                // No change; return
+                return;
+            }
+        }
+
+        Tealium.createInstance(TEALIUM_INSTANCE_MAIN, Tealium.Config.create(
+                mApplication,
+                event.getAccountName(),
+                event.getProfileName(),
+                event.getEnvName()));
+    }
+
     private void onWake(Activity activity, boolean isLaunch) {
 
         mIsInForeground = true;
@@ -375,8 +410,14 @@ public final class TrackingManager implements Application.ActivityLifecycleCallb
     }
 
     private Tealium.Config createConfig() {
+
+        final Model model = Model.getInstance();
+
         return Tealium.Config.create(
-                mApplication, "tealium", "digitalvelocity", BuildConfig.TEALIUM_ENV);
+                mApplication,
+                model.getTealiumAccount(),
+                model.getTealiumProfile(),
+                model.getTealiumEnv());
     }
 
     public static final class Key {

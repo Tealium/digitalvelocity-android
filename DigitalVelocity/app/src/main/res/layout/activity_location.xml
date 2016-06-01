@@ -67,6 +67,11 @@
 
     </FrameLayout>
 
+    <com.tealium.digitalvelocity.view.DVTextViewSemiBold
+        style="@style/label_no_items"
+        android:id="@+id/location_label_none"
+        android:text="@string/location_label_none_text" />
+
     <ProgressBar
         android:id="@+id/location_activity_indicator"
         style="@android:style/Widget.Holo.Light.ProgressBar.Large"

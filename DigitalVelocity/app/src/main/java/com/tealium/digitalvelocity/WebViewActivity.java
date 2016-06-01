@@ -21,6 +21,7 @@ public final class WebViewActivity extends Activity {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_webview);
 
@@ -36,7 +37,8 @@ public final class WebViewActivity extends Activity {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
 
-        webView.loadUrl(this.getIntent().getDataString());
+        final String url = this.getIntent().getDataString();
+        webView.loadUrl(url);
     }
 
     @Override
@@ -51,6 +53,7 @@ public final class WebViewActivity extends Activity {
                 super.onPageFinished(view, url);
                 activityIndicator.setVisibility(View.GONE);
                 pageProgress.setVisibility(View.GONE);
+
             }
         };
     }

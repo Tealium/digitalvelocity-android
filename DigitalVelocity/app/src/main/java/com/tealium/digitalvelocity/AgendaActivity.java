@@ -3,6 +3,7 @@ package com.tealium.digitalvelocity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,7 +26,6 @@ public final class AgendaActivity extends DrawerLayoutActivity {
     public static final int REQUEST_VIEW_AGENDA_DETAIL = 2;
 
     private AgendaAdapter adapter;
-    private boolean shouldScroll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,6 @@ public final class AgendaActivity extends DrawerLayoutActivity {
         listView.setAdapter(this.adapter = new AgendaAdapter(
                 this.findViewById(R.id.agenda_label_nofavs)));
         listView.setOnItemClickListener(createItemClickListener());
-        this.shouldScroll = true;
     }
 
     @Override
@@ -58,6 +57,7 @@ public final class AgendaActivity extends DrawerLayoutActivity {
         }
 
         bus.post(new LoadRequest.Agenda());
+        findViewById(R.id.agenda_label_none).setVisibility(View.GONE);
     }
 
     @Override
@@ -74,7 +74,7 @@ public final class AgendaActivity extends DrawerLayoutActivity {
 
         switch (requestCode) {
             case REQUEST_VIEW_LOCATION:
-                this.shouldScroll = resultCode != LocationActivity.RESULT_BACK_PRESSED;
+                //this.shouldScroll = resultCode != LocationActivity.RESULT_BACK_PRESSED;
                 break;
             case REQUEST_VIEW_AGENDA_DETAIL:
                 if (resultCode == AgendaDetailActivity.RESULT_FAVORITE_TOGGLED) {
@@ -94,18 +94,9 @@ public final class AgendaActivity extends DrawerLayoutActivity {
     public void onEventMainThread(LoadedEvent.Agenda event) {
 
         final View activityIndicator = this.findViewById(R.id.agenda_activity_indicator);
-
-        if (event.getItems().size() == 0) {
-            activityIndicator.setVisibility(View.VISIBLE);
-            return;
-        }
-
         activityIndicator.setVisibility(View.GONE);
-
-        if (!this.shouldScroll) {
-            this.shouldScroll = true;
-            //return;
-        }
+        findViewById(R.id.agenda_label_none)
+                .setVisibility(event.getItems().size() == 0 ? View.VISIBLE : View.GONE);
     }
 
     @SuppressWarnings("unused")
@@ -140,7 +131,7 @@ public final class AgendaActivity extends DrawerLayoutActivity {
                         .add("agenda_subtitle", agendaItem.getSubtitle())
                         .add("agenda_objectid", agendaItem.getId()));
 
-                if (agendaItem.getUrl() != null) {
+                if (!TextUtils.isEmpty(agendaItem.getUrl())) {
                     startActivity(new Intent(AgendaActivity.this, WebViewActivity.class)
                             .putExtra(WebViewActivity.EXTRA_TITLE, agendaItem.getTitle())
                             .setData(Uri.parse(agendaItem.getUrl())));

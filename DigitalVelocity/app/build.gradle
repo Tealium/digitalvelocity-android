@@ -15,6 +15,7 @@ android {
         versionCode 9
         versionName "1.2.3"
         multiDexEnabled true
+        testInstrumentationRunner "com.tealium.digitalvelocity.MultidexRunner"
     }
 
     signingConfigs {
@@ -25,6 +26,13 @@ android {
             keyAlias DIGITAL_VELOCITY_DEBUG_KEY_ALIAS
             keyPassword DIGITAL_VELOCITY_DEBUG_KEY_PASSWORD
         }
+        release {
+            // Defined in ~/.gradle/gradle.properties
+            storeFile file(DIGITAL_VELOCITY_RELEASE_KEYSTORE_PATH)
+            storePassword DIGITAL_VELOCITY_RELEASE_KEYSTORE_PASSWORD
+            keyAlias DIGITAL_VELOCITY_RELEASE_KEY_ALIAS
+            keyPassword DIGITAL_VELOCITY_RELEASE_KEY_PASSWORD
+        }
     }
     buildTypes {
         debug {
@@ -34,6 +42,7 @@ android {
         }
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField 'String', 'TEALIUM_ENV', "\"prod\""
             buildConfigField 'boolean', 'OVERRIDE_BEACON', "false"
@@ -49,13 +58,18 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile(name: 'tealium-5.0.2', ext: 'aar')
-    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile('com.android.support:multidex-instrumentation:1.0.1') {
+        exclude group: 'com.android.support', module: 'multidex'
+    }
     compile project(':beacon')
     compile project(':push')
-    compile project(':keymanager')
+    debugCompile(name: 'keymanager-debug', ext: 'aar')
+    releaseCompile project(':keymanager')
 }
