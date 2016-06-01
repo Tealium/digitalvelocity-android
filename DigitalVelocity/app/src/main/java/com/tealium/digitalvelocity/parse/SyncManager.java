@@ -22,6 +22,7 @@ import com.tealium.digitalvelocity.event.Purge;
 import com.tealium.digitalvelocity.event.SaveRequest;
 import com.tealium.digitalvelocity.event.SyncCompleteEvent;
 import com.tealium.digitalvelocity.event.SyncRequest;
+import com.tealium.digitalvelocity.event.TealiumConfigEvent;
 import com.tealium.digitalvelocity.event.TrackUpdateEvent;
 import com.tealium.digitalvelocity.push.PushManager;
 import com.tealium.digitalvelocity.push.event.PushTokenUpdateEvent;
@@ -281,15 +282,23 @@ public final class SyncManager {
 
     private void processConfigData(JSONArray results) throws JSONException {
 
-        Model model = Model.getInstance();
+        final EventBus bus = EventBus.getDefault();
+        final Model model = Model.getInstance();
         JSONObject config;
-        SharedPreferences.Editor editor = Model.getInstance().getSharedPreferences().edit();
+        final SharedPreferences.Editor editor = Model.getInstance().getSharedPreferences().edit();
 
         if (results.length() > 0) {
             model.setConfig(config = results.getJSONObject(0));
 
+            final String accountName = config.optString("accountOverride", null);
+            final String profileName = config.optString("profileOverride", null);
+            final String envName = config.optString("envOverride", null);
+            if (TealiumConfigEvent.isValid(accountName, profileName, envName)) {
+                bus.post(new TealiumConfigEvent(accountName, profileName, envName));
+            }
+
             if (config.optBoolean("purge", false)) {
-                EventBus.getDefault().post(new Purge());
+                bus.post(new Purge());
 
                 editor.remove(Constant.SP.KEY_LAST_SYNC_COMPANY)
                         .remove(Constant.SP.KEY_LAST_SYNC_EVENT)
@@ -297,9 +306,7 @@ public final class SyncManager {
             }
         }
 
-        final long now = System.currentTimeMillis();
-        editor.putLong(Constant.SP.KEY_LAST_SYNC_CONFIG, now).apply();
-        Table.Config.setLastSyncTS(now);
+        updateLastSyncTimestamp(Table.Config);
 
         if (BuildConfig.DEBUG) {
             Log.i(Constant.TAG, "Received " + results.length() + " Config keys.");

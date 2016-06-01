@@ -59,7 +59,7 @@ public class MapController extends BaseController implements View.OnClickListene
     }
 
     @Override
-    protected int getOptionCount() {
+    public int getOptionCount() {
         final int count = mCoordinates.size();
         if (count > 0 && mSelectedCoords == null) {
             // Select 1st if none selected.

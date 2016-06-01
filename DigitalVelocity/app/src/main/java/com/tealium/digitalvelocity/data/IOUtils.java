@@ -110,7 +110,9 @@ public final class IOUtils {
                 SUFFIX_AGENDA_ITEM,
                 SUFFIX_COORDINATES,
                 SUFFIX_NOTIFICATION,
-                SUFFIX_SPONSOR
+                SUFFIX_SPONSOR,
+                SUFFIX_SURVEY,
+                SUFFIX_QUESTION
         };
 
         return new FilenameFilter() {

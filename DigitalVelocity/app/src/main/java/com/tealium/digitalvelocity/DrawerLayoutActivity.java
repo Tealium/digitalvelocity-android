@@ -131,7 +131,7 @@ public class DrawerLayoutActivity extends Activity {
             // TODO Externalize
             Toast.makeText(this, "Using bluetooth for location services", Toast.LENGTH_LONG).show();
 
-            if(BluetoothAdapter.getDefaultAdapter() != null) {
+            if (BluetoothAdapter.getDefaultAdapter() != null) {
                 BluetoothAdapter.getDefaultAdapter().enable();
             }
 
@@ -158,6 +158,18 @@ public class DrawerLayoutActivity extends Activity {
 
     @Override
     public void setTitle(CharSequence title) {
+
+        if (isShowingLogo()) {
+            // Overridden
+            final TextView titleView = (TextView)findViewById(R.id.actionbar_title);
+            titleView.setVisibility(View.VISIBLE);
+            titleView.setText(title);
+
+            findViewById(R.id.actionbar_image_logo).setVisibility(View.GONE);
+            return;
+        }
+
+
         if (mTitleLabel != null) {
             mTitleLabel.setText(title);
         } else {

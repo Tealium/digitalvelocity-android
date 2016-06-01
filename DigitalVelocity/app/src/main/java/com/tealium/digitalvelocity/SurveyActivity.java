@@ -8,6 +8,7 @@ import android.widget.ListView;
 
 import com.tealium.digitalvelocity.data.gson.Survey;
 import com.tealium.digitalvelocity.event.LoadRequest;
+import com.tealium.digitalvelocity.event.LoadedEvent;
 import com.tealium.digitalvelocity.survey.SurveyAdapter;
 
 import de.greenrobot.event.EventBus;
@@ -70,5 +71,11 @@ public class SurveyActivity extends DrawerLayoutActivity {
         }
 
         super.onStop();
+    }
+
+    @SuppressWarnings("unused")
+    public void onEventMainThread(LoadedEvent.Surveys surveys) {
+        this.findViewById(R.id.survey_label_none)
+                .setVisibility(surveys.getItems().size() == 0 ? View.VISIBLE : View.GONE);
     }
 }

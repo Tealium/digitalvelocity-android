@@ -2,6 +2,7 @@ package com.tealium.digitalvelocity.location;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -10,52 +11,55 @@ import com.tealium.digitalvelocity.R;
 
 public abstract class BaseController {
 
-    private final Activity activity;
-    private final FrameLayout contentView;
-    private final RadioGroup optionRadioGroup;
-    private boolean isSelected;
+    private final Activity mActivity;
+    private final FrameLayout mContentView;
+    private final RadioGroup mOptionRadioGroup;
+    private boolean mIsSelected;
 
     protected BaseController(Activity activity) {
-        this.activity = activity;
-        this.contentView = (FrameLayout) activity.findViewById(R.id.location_content);
-        this.optionRadioGroup = (RadioGroup) activity.findViewById(R.id.location_radiogroup_options);
+        mActivity = activity;
+        mContentView = (FrameLayout) activity.findViewById(R.id.location_content);
+        mOptionRadioGroup = (RadioGroup) activity.findViewById(R.id.location_radiogroup_options);
     }
 
     protected final Activity getActivity() {
-        return activity;
+        return mActivity;
     }
 
     protected final FrameLayout getContentView() {
-        return contentView;
+        return mContentView;
     }
 
     protected final RadioGroup getOptionRadioGroup() {
-        return optionRadioGroup;
+        return mOptionRadioGroup;
     }
 
     public final boolean isSelected() {
-        return isSelected;
+        return mIsSelected;
     }
 
     public final BaseController deselect() {
-        this.isSelected = false;
-        this.onDeselected();
+        mIsSelected = false;
+        onDeselected();
         return this;
     }
 
     public final BaseController select() {
-        this.isSelected = true;
-        this.refresh();
+        mIsSelected = true;
+        refresh();
         return this;
     }
 
     public abstract boolean selectLocation(String locationId);
 
     protected final void refresh() {
-        LayoutInflater inflater = this.getActivity().getLayoutInflater();
-        RadioGroup group = this.getOptionRadioGroup();
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        RadioGroup group = getOptionRadioGroup();
 
-        final int optionCount = this.getOptionCount();
+        final int optionCount = getOptionCount();
+
+        getActivity().findViewById(R.id.location_label_none)
+                .setVisibility(optionCount == 0 ? View.VISIBLE : View.GONE);
 
         while (group.getChildCount() < optionCount) {
             group.addView(inflater.inflate(R.layout.radio_location_option, group, false));
@@ -65,11 +69,11 @@ public abstract class BaseController {
             group.removeViewAt(0);
         }
 
-        for (int i = 0; i < this.getOptionCount(); i++) {
-            this.populateRadio(i, (RadioButton) group.getChildAt(i));
+        for (int i = 0; i < getOptionCount(); i++) {
+            populateRadio(i, (RadioButton) group.getChildAt(i));
         }
 
-        this.onRefresh();
+        onRefresh();
     }
 
     protected void onDeselected() {
@@ -77,7 +81,7 @@ public abstract class BaseController {
 
     protected abstract void onRefresh();
 
-    protected abstract int getOptionCount();
+    public abstract int getOptionCount();
 
     protected abstract void populateRadio(int position, RadioButton button);
 }

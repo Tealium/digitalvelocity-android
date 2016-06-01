@@ -1,8 +1,10 @@
 package com.tealium.digitalvelocity;
 
+import android.os.Build;
 import android.os.SystemClock;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
+import android.webkit.WebView;
 
 import com.tealium.digitalvelocity.data.Model;
 import com.tealium.digitalvelocity.data.TrackingManager;
@@ -41,6 +43,9 @@ public final class DigitalVelocityApp extends MultiDexApplication {
         AlarmReceiver.setup(this);
 
         if (BuildConfig.DEBUG) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                WebView.setWebContentsDebuggingEnabled(true);
+            }
             Log.i(Constant.TAG, "Application onCreate took " +
                     (SystemClock.uptimeMillis() - start) + " ms.");
         }

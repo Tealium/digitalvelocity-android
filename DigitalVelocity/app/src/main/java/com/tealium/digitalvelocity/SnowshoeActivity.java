@@ -11,12 +11,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.tealium.digitalvelocity.data.Model;
+import com.tealium.digitalvelocity.data.TrackingManager;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 public final class SnowshoeActivity extends DrawerLayoutActivity {
@@ -64,19 +70,25 @@ public final class SnowshoeActivity extends DrawerLayoutActivity {
 
     private void loadPage() {
 
+        final Model model = Model.getInstance();
+        final String userEmail = model.getUserEmail();
+
         final String snowshoeUrl = Model.getInstance().getSnowShoeUrl();
+        final String url;
+
 
         if (!TextUtils.isEmpty(snowshoeUrl)) {
-            mViewState.mWebView.loadUrl(snowshoeUrl);
-            return;
+            url = snowshoeUrl;
+        } else {
+            url = new Uri.Builder()
+                    .scheme("http")
+                    .authority(Model.getInstance().getKeyManager().getSnowshoeAuthority())
+                    .appendPath("index")
+                    .appendQueryParameter("uid", userEmail)
+                    .build().toString();
         }
 
-        mViewState.mWebView.loadUrl(new Uri.Builder()
-                .scheme("http")
-                .authority(Model.getInstance().getKeyManager().getSnowshoeAuthority())
-                .appendPath("index")
-                .appendQueryParameter("uid", Model.getInstance().getUserEmail())
-                .build().toString());
+        mViewState.mWebView.loadUrl(url);
     }
 
     @Override
@@ -89,6 +101,67 @@ public final class SnowshoeActivity extends DrawerLayoutActivity {
                 Model.getInstance().getUserEmail() != null) {
             loadPage();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mViewState.mWebView.canGoBack()) {
+            mViewState.mWebView.goBack();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    private void syncCookies(String url) {
+
+        final Model model = Model.getInstance();
+        final String userEmail = model.getUserEmail();
+        final String visitorId = TrackingManager.getVisitorId();
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            CookieSyncManager.createInstance(this);
+        }
+
+        final CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+
+        try {
+            cookieManager.setCookie(url, "user_email=" + URLEncoder.encode(userEmail, "UTF-8"));
+
+
+            if (visitorId != null) {
+                cookieManager.setCookie(url, "visitor_id=" + URLEncoder.encode(visitorId, "UTF-8"));
+            }
+
+            final String name = (String) model.getVipData().get("vip_name");
+            if (!TextUtils.isEmpty(name)) {
+                cookieManager.setCookie(url, "user_name=" + URLEncoder.encode(name, "UTF-8"));
+            }
+        } catch (UnsupportedEncodingException e) {
+            // should never happen
+            throw new RuntimeException(e);
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            CookieSyncManager.getInstance().sync();
+        } else {
+            cookieManager.flush();
+        }
+
+        final String pageTitleKey = "page_title=";
+        final String cookie = cookieManager.getCookie(url);
+        final int pageTitleIndex = cookie.indexOf(pageTitleKey);
+        if (pageTitleIndex == -1) {
+            return;
+        }
+
+        String pageTitle = cookie.substring(pageTitleIndex + pageTitleKey.length());
+        final int semicolonIndex = pageTitle.indexOf(';');
+        if (semicolonIndex != -1) {
+            pageTitle = pageTitle.substring(0, semicolonIndex);
+        }
+
+        setTitle(pageTitle);
     }
 
     private WebViewClient createWebViewClient() {
@@ -124,6 +197,8 @@ public final class SnowshoeActivity extends DrawerLayoutActivity {
                 } else {
                     mViewState.setPageStatus(PAGE_STATUS_LOADED);
                 }
+
+                syncCookies(url);
             }
         };
     }
